@@ -42,3 +42,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Dart generated files
+*.g.dart
+*.freezed.dart
+*.gr.dart
+*.config.dart
+*.gen.dart
+*.mocks.dart
