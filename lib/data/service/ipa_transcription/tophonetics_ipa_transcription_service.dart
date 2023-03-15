@@ -46,6 +46,6 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
       .parse(htmlToParse)
       .getElementById(_idOfElementWithTranscription)!
       .children
-      .map((element) => element.innerHtml)
+      .map((element) => element.innerHtml) // TODO mark as invalid if the transcription is displayed as red
       .join(' ');
 }

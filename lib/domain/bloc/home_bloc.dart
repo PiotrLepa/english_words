@@ -20,15 +20,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<TextSubmitted>(_onTextSubmitted);
   }
 
-  Future<void> _onTextSubmitted(TextSubmitted event,
-      Emitter<HomeState> emit,) async {
+  Future<void> _onTextSubmitted(
+    TextSubmitted event,
+    Emitter<HomeState> emit,
+  ) async {
     await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
-      final savedTexts = state.savedTexts ?? [];
-      savedTexts.add(textInfo);
-      emit(state.copyWith(savedTexts: savedTexts));
-      }).catchError((error, stackTrace) {
+      emit(state.copyWith(
+        savedTexts: [textInfo, ...state.savedTexts],
+      ));
+    }).catchError((error, stackTrace) {
+      // TODO set error state
       log(
-        'translating failed: $error',
+        'getting text info failed',
         error: error,
         stackTrace: stackTrace,
       );

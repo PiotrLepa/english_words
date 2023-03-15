@@ -15,7 +15,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<HomeBloc>()..add(const TextSubmitted('think')), // TODO remove
+      create: (_) => getIt<HomeBloc>(),
       child: MaterialApp.router(
         onGenerateTitle: (context) => context.strings.appName,
         localizationsDelegates: AppLocalizations.localizationsDelegates,

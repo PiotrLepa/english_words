@@ -1,3 +1,5 @@
 {
-  "appName": "English Words"
+  "appName": "English Words",
+  "homeInputHint":"Enter a text",
+  "homeTranslateButton": "Translate"
 }

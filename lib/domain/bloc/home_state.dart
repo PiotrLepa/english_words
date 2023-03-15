@@ -3,8 +3,10 @@ part of 'home_bloc.dart';
 @freezed
 class HomeState with _$HomeState {
   factory HomeState.initial() => const HomeState(
-        savedTexts: null,
+        savedTexts: [],
       );
 
-  const factory HomeState({List<TextInfo>? savedTexts}) = _HomeState;
+  const factory HomeState({
+    required List<TextInfo> savedTexts,
+  }) = _HomeState;
 }

@@ -15,12 +15,12 @@ class HomeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          final savedTexts = state.savedTexts ?? [];
-          if (savedTexts.isNotEmpty) {
-            return HomePage(savedTexts: savedTexts);
-          } else {
-            return const SizedBox();
-          }
+          return HomePage(
+            savedTexts: state.savedTexts,
+            onTextSubmitted: (text) {
+              context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
+            },
+          );
         },
       ),
     );

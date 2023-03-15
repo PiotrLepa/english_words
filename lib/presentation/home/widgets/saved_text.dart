@@ -14,13 +14,20 @@ class SavedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const padding = 12.0;
     return Row(
       children: [
-        Text(originalText),
-        const VerticalDivider(),
-        Text(ipaTranscription),
-        const VerticalDivider(),
-        Text(translation),
+        Expanded(
+          child: Text(originalText),
+        ),
+        const SizedBox(width: padding),
+        Expanded(
+          child: Text(ipaTranscription),
+        ),
+        const SizedBox(width: padding),
+        Expanded(
+          child: Text(translation),
+        ),
       ],
     );
   }
