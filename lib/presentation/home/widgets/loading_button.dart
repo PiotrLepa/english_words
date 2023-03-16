@@ -23,11 +23,7 @@ class LoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        if (!isLoading) {
-          onPressed();
-        }
-      },
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
       ),

@@ -16,7 +16,11 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetTextInfoUseCase _getTextInfoUseCase;
 
-  HomeBloc(this._getTextInfoUseCase) : super(HomeState.initial()) {
+  HomeBloc(this._getTextInfoUseCase)
+      : super(const HomeState.loading(
+          savedTexts: [],
+          isTranslatingInProgress: false,
+        )) {
     on<TextSubmitted>(_onTextSubmitted);
   }
 
@@ -30,14 +34,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       isTranslatingInProgress: true,
     ));
     await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
-      emit(state.copyWith(
+      emit(HomeState.translationSuccessful(
         isTranslatingInProgress: false,
         savedTexts: [textInfo, ...state.savedTexts],
       ));
     }).catchError((error, stackTrace) {
-      // TODO set error state
-      emit(state.copyWith(
-        isTranslatingInProgress: true,
+      emit(HomeState.translationFailure(
+        isTranslatingInProgress: false,
+        savedTexts: state.savedTexts,
       ));
       log(
         'getting text info failed',

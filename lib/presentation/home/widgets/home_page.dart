@@ -7,12 +7,14 @@ class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
   final List<TextInfo> savedTexts;
   final bool isTranslatingInProgress;
+  final TextEditingController textEditController;
 
   const HomePage({
     Key? key,
     required this.onTextSubmitted,
     required this.savedTexts,
     required this.isTranslatingInProgress,
+    required this.textEditController,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class HomePage extends StatelessWidget {
           HomeTextInput(
             onTextSubmitted: onTextSubmitted,
             isTranslatingInProgress: isTranslatingInProgress,
+              textEditController: textEditController,
           ),
           const SizedBox(height: 48),
           Expanded(

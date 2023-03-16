@@ -3,5 +3,6 @@
   "homeInputHint":"Enter a text",
   "homeTranslateButton": "Translate",
   "homeTranslatingButton": "Translating...",
-  "progressButtonLoading": "Loading..."
+  "progressButtonLoading": "Loading...",
+  "translationFailureMessage": "An error occurred during the translation"
 }
