@@ -17,6 +17,7 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           return HomePage(
             savedTexts: state.savedTexts,
+            isTranslatingInProgress: state.isTranslatingInProgress,
             onTextSubmitted: (text) {
               context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
             },

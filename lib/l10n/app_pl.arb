@@ -1,5 +1,7 @@
 {
   "appName": "Angielskie Słówka",
   "homeInputHint":"Wpisz tekst",
-  "homeTranslateButton": "Przetłumacz"
+  "homeTranslateButton": "Przetłumacz",
+  "homeTranslatingButton": "Tłumaczenie...",
+  "progressButtonLoading": "Ładowanie..."
 }

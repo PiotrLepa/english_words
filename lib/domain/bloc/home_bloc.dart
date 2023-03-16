@@ -24,12 +24,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     TextSubmitted event,
     Emitter<HomeState> emit,
   ) async {
+    if (state.isTranslatingInProgress) return;
+
+    emit(state.copyWith(
+      isTranslatingInProgress: true,
+    ));
     await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
       emit(state.copyWith(
+        isTranslatingInProgress: false,
         savedTexts: [textInfo, ...state.savedTexts],
       ));
     }).catchError((error, stackTrace) {
       // TODO set error state
+      emit(state.copyWith(
+        isTranslatingInProgress: true,
+      ));
       log(
         'getting text info failed',
         error: error,

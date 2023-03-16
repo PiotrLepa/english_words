@@ -1,12 +1,15 @@
 import 'package:english_words/presentation/extensions.dart';
+import 'package:english_words/presentation/home/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 
 class HomeTextInput extends StatefulWidget {
   final void Function(String text) onTextSubmitted;
+  final bool isTranslatingInProgress;
 
   const HomeTextInput({
     Key? key,
     required this.onTextSubmitted,
+    required this.isTranslatingInProgress,
   }) : super(key: key);
 
   @override
@@ -34,13 +37,13 @@ class _HomeTextInputState extends State<HomeTextInput> {
           ),
         ),
         const SizedBox(width: 16),
-        ElevatedButton(
+        LoadingButton(
           onPressed: () {
             widget.onTextSubmitted(textEditController.value.text);
           },
-          child: Text(
-            context.strings.homeTranslateButton,
-          ),
+          isLoading: widget.isTranslatingInProgress,
+          text: context.strings.homeTranslateButton,
+          loadingText: context.strings.homeTranslatingButton,
         ),
       ],
     );

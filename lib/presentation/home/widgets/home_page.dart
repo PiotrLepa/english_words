@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
   final List<TextInfo> savedTexts;
+  final bool isTranslatingInProgress;
 
   const HomePage({
     Key? key,
     required this.onTextSubmitted,
     required this.savedTexts,
+    required this.isTranslatingInProgress,
   }) : super(key: key);
 
   @override
@@ -22,6 +24,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 24),
           HomeTextInput(
             onTextSubmitted: onTextSubmitted,
+            isTranslatingInProgress: isTranslatingInProgress,
           ),
           const SizedBox(height: 48),
           Expanded(
@@ -35,7 +38,7 @@ class HomePage extends StatelessWidget {
   Widget _buildListOrPlaceholder(List<TextInfo> savedTexts) {
     if (savedTexts.isEmpty) {
       return Text('Placeholder'); // TODO
-    }  else {
+    } else {
       return ListView.separated(
         itemCount: savedTexts.length,
         separatorBuilder: (context, index) => const Divider(),
