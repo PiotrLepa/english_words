@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:english_words/data/model/ipa_transcription/ipa_transcription_response.dart';
+import 'package:english_words/data/model/word_ipa_transcription/word_ipa_transcription_response.dart';
 import 'package:english_words/data/service/ipa_transcription/ipa_transcription_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
@@ -14,6 +16,7 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
   static const _fieldText = 'text_to_transcribe';
   static const _headers = {'Content-Type': 'application/x-www-form-urlencoded'};
   static const _idOfElementWithTranscription = 'transcr_output';
+  static const _missingTranscription = 'transcription_missing';
   static final _uri = Uri.parse('https://tophonetics.com/');
 
   @override
@@ -31,7 +34,7 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
           String htmlToParse = await response.stream.bytesToString();
           return IpaTranscriptionResponse(
             dialect: _dialectValue,
-            text: _extractTranscriptionFromHtml(htmlToParse),
+            words: _extractWordsTranscription(htmlToParse),
           );
         } else {
           return Future.error(Exception()); // TODO return meaningful exception
@@ -42,10 +45,17 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
     }
   }
 
-  String _extractTranscriptionFromHtml(String htmlToParse) => html
-      .parse(htmlToParse)
-      .getElementById(_idOfElementWithTranscription)!
-      .children
-      .map((element) => element.innerHtml) // TODO mark as invalid if the transcription is displayed as red
-      .join(' ');
+  List<WordIpaTranscriptionResponse> _extractWordsTranscription(
+    String htmlToParse,
+  ) =>
+      html
+          .parse(htmlToParse)
+          .getElementById(_idOfElementWithTranscription)!
+          .children
+          .map((element) => WordIpaTranscriptionResponse(
+                isSuccessfull: element.className != _missingTranscription,
+                text: element.innerHtml,
+              ))
+          .toList()
+        ..removeLast(); // remove empty string
 }

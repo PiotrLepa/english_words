@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
           return SavedText(
             originalText: item.originalText,
             translation: item.translations.first.text,
-            ipaTranscription: item.ipaTranscription.text,
+            wordsTranscription: item.ipaTranscription.words,
           );
         },
       );
