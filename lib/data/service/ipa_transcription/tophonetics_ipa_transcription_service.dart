@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:english_words/data/model/ipa_transcription/ipa_transcription_response.dart';
@@ -54,8 +53,8 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
           .children
           .map((element) => WordIpaTranscriptionResponse(
                 isSuccessfull: element.className != _missingTranscription,
-                text: element.innerHtml,
+                text: element.text,
               ))
           .toList()
-        ..removeLast(); // remove empty string
+        ..removeLast(); // remove a new line added by the service
 }
