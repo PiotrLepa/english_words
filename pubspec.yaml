@@ -66,42 +66,17 @@ flutter:
   fonts:
     - family: Lato
       fonts:
-        - asset: fonts/lato_light.ttf
-          style: normal
-          weight: 300
-        - asset: fonts/lato_light_italic.ttf
-          style: italic
-          weight: 300
         - asset: fonts/lato_regular.ttf
           style: normal
           weight: 400
-        - asset: fonts/lato_italic.ttf
-          style: italic
-          weight: 400
-        - asset: fonts/lato_medium.ttf
-          style: normal
-          weight: 500
-        - asset: fonts/lato_medium_italic.ttf
-          style: italic
-          weight: 500
-        - asset: fonts/lato_semi_bold.ttf
-          style: normal
-          weight: 600
-        - asset: fonts/lato_semi_bold_italic.ttf
-          style: italic
-          weight: 600
         - asset: fonts/lato_bold.ttf
           style: normal
           weight: 700
-        - asset: fonts/lato_bold_italic.ttf
+    - family: FiraSans
+      fonts:
+        - asset: fonts/fira_sans_italic.ttf
           style: italic
-          weight: 700
-        - asset: fonts/lato_black.ttf
-          style: normal
-          weight: 900
-        - asset: fonts/lato_black_italic.ttf
-          style: italic
-          weight: 900
+          weight: 400
 
 flutter_gen:
   integrations:
