@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
           final item = savedTexts[index];
           return SavedTextItem(
             originalText: item.originalText,
-            translation: item.translations.first.text,
+            translations: item.translations,
             wordsTranscription: item.ipaTranscription.words,
             backgroundColor: ThemeProvider.of(context).getListItemColor(index),
           );

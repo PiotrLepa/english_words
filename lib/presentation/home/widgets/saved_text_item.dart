@@ -1,3 +1,4 @@
+import 'package:english_words/domain/model/translation/translation.dart';
 import 'package:english_words/domain/model/word_ipa_transcription/word_ipa_transcription.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
@@ -6,14 +7,14 @@ import 'package:flutter/material.dart';
 
 class SavedTextItem extends StatelessWidget {
   final String originalText;
-  final String translation;
+  final List<Translation> translations;
   final List<WordIpaTranscription> wordsTranscription;
   final Color backgroundColor;
 
   const SavedTextItem({
     Key? key,
     required this.originalText,
-    required this.translation,
+    required this.translations,
     required this.wordsTranscription,
     required this.backgroundColor,
   }) : super(key: key);
@@ -24,7 +25,7 @@ class SavedTextItem extends StatelessWidget {
       backgroundDecoration: BoxDecoration(color: backgroundColor),
       firstWidget: Text(originalText),
       secondWidget: _buildTranscription(context),
-      thirdWidget: Text(translation),
+      thirdWidget: _buildTranslation(),
     );
   }
 
@@ -50,5 +51,10 @@ class SavedTextItem extends StatelessWidget {
         children: textSpans,
       ),
     );
+  }
+
+  Widget _buildTranslation() {
+    final translationsText = translations.map((translation) => translation.text).join(', ');
+    return Text(translationsText);
   }
 }
