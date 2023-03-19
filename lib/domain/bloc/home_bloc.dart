@@ -18,10 +18,243 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc(this._getTextInfoUseCase)
       : super(const HomeState.loading(
-          savedTexts: [],
+          savedTexts: [
+            TextInfo(
+              originalText: 'test 1',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 1'),
+                Translation(detectedSourceLanguage: 'en', text: 'abc'),
+                Translation(detectedSourceLanguage: 'en', text: 'de'),
+                Translation(detectedSourceLanguage: 'en', text: 'test 1'),
+                Translation(detectedSourceLanguage: 'en', text: 'abc'),
+                Translation(detectedSourceLanguage: 'en', text: 'de'),
+                Translation(detectedSourceLanguage: 'en', text: 'test 1'),
+                Translation(detectedSourceLanguage: 'en', text: 'abc'),
+                Translation(detectedSourceLanguage: 'en', text: 'de'),
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: true, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: false, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: false, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: false, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: true, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: true, text: 'test 1'),
+                WordIpaTranscription(isSuccessful: true, text: 'test 1'),
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 2',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 2')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 2')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 3',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 3')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 3')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 4',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 4')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 4')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 5',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 5')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 5')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 6',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 6')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 6')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 7',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 7')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 7')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 8',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 8')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 8')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 1',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 1')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 1')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 2',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 2')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 2')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 3',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 3')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 3')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 4',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 4')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 4')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 5',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 5')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 5')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 6',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 6')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 6')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 7',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 7')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 7')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 8',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 8')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 8')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 1',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 1')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 1')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 2',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 2')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 2')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 3',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 3')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 3')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 4',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 4')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 4')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 5',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 5')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 5')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 6',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 6')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 6')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 7',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 7')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 7')
+              ]),
+            ),
+            TextInfo(
+              originalText: 'test 8',
+              translations: [
+                Translation(detectedSourceLanguage: 'en', text: 'test 8')
+              ],
+              ipaTranscription: IpaTranscription(dialect: 'am', words: [
+                WordIpaTranscription(isSuccessful: true, text: 'test 8')
+              ]),
+            ),
+          ],
           isTranslatingInProgress: false,
         )) {
     on<TextSubmitted>(_onTextSubmitted);
+    on<SavedTextDeletedEvent>(_onSavedTextDeleted);
   }
 
   Future<void> _onTextSubmitted(
@@ -60,5 +293,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
   }
 
-  bool _isTextAlreadySaved(String text) => state.savedTexts.any((element) => element.originalText == text);
+  bool _isTextAlreadySaved(String text) =>
+      state.savedTexts.any((element) => element.originalText == text);
+
+  Future<void> _onSavedTextDeleted(
+    SavedTextDeletedEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeState.savedTextDeleted(
+      isTranslatingInProgress: false,
+      savedTexts:
+          state.savedTexts.where((element) => element != event.item).toList(),
+    ));
+  }
 }

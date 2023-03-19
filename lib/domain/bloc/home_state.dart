@@ -21,4 +21,9 @@ class HomeState with _$HomeState {
     required List<TextInfo> savedTexts,
     required bool isTranslatingInProgress,
   }) = TranslationFailure;
+
+  const factory HomeState.savedTextDeleted({
+    required List<TextInfo> savedTexts,
+    required bool isTranslatingInProgress,
+  }) = SavedTextDeleted;
 }

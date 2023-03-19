@@ -31,8 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (_, newState) {
           newState.maybeMap(
             translationSuccessful: (_) => _clearInput(),
-            textAlreadySaved: (_) => _showTextAlreadySavedErrorSnackBar(context),
+            textAlreadySaved: (_) =>
+                _showTextAlreadySavedErrorSnackBar(context),
             translationFailure: (_) => _showTranslationFailureSnackBar(context),
+            savedTextDeleted: (_) => _showSavedTextDeletedSnackBar(context),
             orElse: () {},
           );
         },
@@ -44,10 +46,17 @@ class _HomeScreenState extends State<HomeScreen> {
             onTextSubmitted: (text) {
               context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
             },
+            onTextDeleted: (item) {
+              context.read<HomeBloc>().add(HomeEvent.savedTextDeleted(item));
+            },
           );
         },
       ),
     );
+  }
+
+  void _clearInput() {
+    _textEditController.clear();
   }
 
   void _showTextAlreadySavedErrorSnackBar(BuildContext context) {
@@ -67,7 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _clearInput() {
-    _textEditController.clear();
+  void _showSavedTextDeletedSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.strings.homeSavedTextDeleted),
+      ),
+    );
   }
 }

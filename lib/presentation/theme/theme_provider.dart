@@ -32,6 +32,8 @@ class ThemeProvider {
 
   Color get listItemOdd => Colors.white;
 
+  Color get listItemDelete => Colors.red;
+
   ThemeProvider({required this.isDark});
 
   factory ThemeProvider.of(BuildContext context) {

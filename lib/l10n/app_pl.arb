@@ -6,5 +6,7 @@
   "homeSavedTextHeaderTranslation": "Polski",
   "homeSavedTextHeaderTranscription": "Transkrypcja",
   "homeTextAlreadySavedError": "Tekst jest już zapisany",
+  "homeSavedTextDeleted": "Zapisany tekst został usunięty",
+  "homeUndoTextDeletion": "Cofnij",
   "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia"
 }

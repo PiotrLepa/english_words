@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
+  final void Function(TextInfo item) onTextDeleted;
   final List<TextInfo> savedTexts;
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
     required this.onTextSubmitted,
+    required this.onTextDeleted,
     required this.savedTexts,
     required this.isTranslatingInProgress,
     required this.textEditController,
@@ -51,10 +53,9 @@ class HomePage extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = savedTexts[index];
           return SavedTextItem(
-            originalText: item.originalText,
-            translations: item.translations,
-            wordsTranscription: item.ipaTranscription.words,
+            item: item,
             backgroundColor: ThemeProvider.of(context).getListItemColor(index),
+            onItemDeleted: onTextDeleted,
           );
         },
       );
