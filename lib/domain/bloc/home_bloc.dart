@@ -28,12 +28,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     TextSubmitted event,
     Emitter<HomeState> emit,
   ) async {
-    if (state.isTranslatingInProgress) return;
+    final trimmedText = event.text.trim();
+    if (trimmedText.isEmpty || state.isTranslatingInProgress) return;
 
-    emit(state.copyWith(
+    emit(HomeState.loading(
       isTranslatingInProgress: true,
+      savedTexts: state.savedTexts,
     ));
-    await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
+    await _getTextInfoUseCase.invoke(trimmedText).then((textInfo) {
       emit(HomeState.translationSuccessful(
         isTranslatingInProgress: false,
         savedTexts: [textInfo, ...state.savedTexts],
