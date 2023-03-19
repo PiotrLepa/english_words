@@ -28,6 +28,10 @@ class ThemeProvider {
 
   Color get errorColor => Colors.red;
 
+  Color get listItemEven => const Color(0xFFF0EFEE);
+
+  Color get listItemOdd => Colors.white;
+
   ThemeProvider({required this.isDark});
 
   factory ThemeProvider.of(BuildContext context) {
@@ -79,5 +83,10 @@ class ThemeProvider {
         thickness: 1,
       ),
     );
+  }
+
+  Color getListItemColor(int index) {
+    final isEven = index % 2 == 0;
+    return isEven ? listItemEven : listItemOdd;
   }
 }

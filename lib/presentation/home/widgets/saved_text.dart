@@ -7,35 +7,43 @@ class SavedText extends StatelessWidget {
   final String originalText;
   final String translation;
   final List<WordIpaTranscription> wordsTranscription;
+  final Color backgroundColor;
 
   const SavedText({
     Key? key,
     required this.originalText,
     required this.translation,
     required this.wordsTranscription,
+    required this.backgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const padding = 12.0;
-    return Row(
-      children: [
-        Expanded(
-          child: Text(originalText),
-        ),
-        const SizedBox(width: padding),
-        Expanded(
-          child: _buildTranscription(context),
-        ),
-        const SizedBox(width: padding),
-        Expanded(
-          child: Text(translation),
-        ),
-      ],
+    const padding = 8.0;
+    return Container(
+      color: backgroundColor,
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(originalText),
+          ),
+          const SizedBox(width: padding),
+          Expanded(
+            child: _buildTranscription(context),
+          ),
+          const SizedBox(width: padding),
+          Expanded(
+            child: Text(translation),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildTranscription(BuildContext context) {
+    final textColor = ThemeProvider.of(context).textColor;
+    final errorTextColor = ThemeProvider.of(context).errorColor;
     final textSpans = wordsTranscription
         .asMap()
         .entries
@@ -44,9 +52,7 @@ class SavedText extends StatelessWidget {
                   (entry.key == wordsTranscription.length ? '' : ' '),
               style: TextStyle(
                 fontFamily: FontFamily.firaSans,
-                color: entry.value.isSuccessful
-                    ? null
-                    : ThemeProvider.of(context).errorColor,
+                color: entry.value.isSuccessful ? textColor : errorTextColor,
               ),
             ))
         .toList();
@@ -54,7 +60,6 @@ class SavedText extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: '',
-        style: DefaultTextStyle.of(context).style,
         children: textSpans,
       ),
     );
