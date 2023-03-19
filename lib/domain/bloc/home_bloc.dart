@@ -30,6 +30,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final trimmedText = event.text.trim();
     if (trimmedText.isEmpty || state.isTranslatingInProgress) return;
+    if (_isTextAlreadySaved(trimmedText)) {
+      emit(HomeState.textAlreadySaved(
+        isTranslatingInProgress: false,
+        savedTexts: state.savedTexts,
+      ));
+      return;
+    }
 
     emit(HomeState.loading(
       isTranslatingInProgress: true,
@@ -52,4 +59,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
     });
   }
+
+  bool _isTextAlreadySaved(String text) => state.savedTexts.any((element) => element.originalText == text);
 }

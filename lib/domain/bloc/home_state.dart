@@ -12,6 +12,11 @@ class HomeState with _$HomeState {
     required bool isTranslatingInProgress,
   }) = TranslationSuccessful;
 
+  const factory HomeState.textAlreadySaved({
+    required List<TextInfo> savedTexts,
+    required bool isTranslatingInProgress,
+  }) = TextAlreadySaved;
+
   const factory HomeState.translationFailure({
     required List<TextInfo> savedTexts,
     required bool isTranslatingInProgress,

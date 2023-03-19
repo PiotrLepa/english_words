@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (_, newState) {
           newState.maybeMap(
             translationSuccessful: (_) => _clearInput(),
+            textAlreadySaved: (_) => _showTextAlreadySavedErrorSnackBar(context),
             translationFailure: (_) => _showTranslationFailureSnackBar(context),
             orElse: () {},
           );
@@ -49,10 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showTextAlreadySavedErrorSnackBar(BuildContext context) {
+    _showErrorSnackBar(context, context.strings.homeTextAlreadySavedError);
+  }
+
   void _showTranslationFailureSnackBar(BuildContext context) {
+    _showErrorSnackBar(context, context.strings.translationFailureMessage);
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(context.strings.translationFailureMessage),
+        content: Text(message),
         backgroundColor: ThemeProvider.of(context).errorColor,
       ),
     );
