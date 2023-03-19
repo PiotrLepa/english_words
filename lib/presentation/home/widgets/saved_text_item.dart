@@ -1,15 +1,16 @@
 import 'package:english_words/domain/model/word_ipa_transcription/word_ipa_transcription.dart';
 import 'package:english_words/gen/fonts.gen.dart';
+import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class SavedText extends StatelessWidget {
+class SavedTextItem extends StatelessWidget {
   final String originalText;
   final String translation;
   final List<WordIpaTranscription> wordsTranscription;
   final Color backgroundColor;
 
-  const SavedText({
+  const SavedTextItem({
     Key? key,
     required this.originalText,
     required this.translation,
@@ -19,25 +20,11 @@ class SavedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const padding = 8.0;
-    return Container(
-      color: backgroundColor,
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(originalText),
-          ),
-          const SizedBox(width: padding),
-          Expanded(
-            child: _buildTranscription(context),
-          ),
-          const SizedBox(width: padding),
-          Expanded(
-            child: Text(translation),
-          ),
-        ],
-      ),
+    return BaseSavedTextListItem(
+      backgroundDecoration: BoxDecoration(color: backgroundColor),
+      firstWidget: Text(originalText),
+      secondWidget: _buildTranscription(context),
+      thirdWidget: Text(translation),
     );
   }
 

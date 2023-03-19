@@ -1,6 +1,7 @@
 import 'package:english_words/domain/model/text_info/text_info.dart';
 import 'package:english_words/presentation/home/widgets/home_text_input.dart';
-import 'package:english_words/presentation/home/widgets/saved_text.dart';
+import 'package:english_words/presentation/home/widgets/saved_text_item.dart';
+import 'package:english_words/presentation/home/widgets/saved_text_list_header.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.all(16),
           child: HomeTextInput(
@@ -31,7 +32,8 @@ class HomePage extends StatelessWidget {
             textEditController: textEditController,
           ),
         ),
-        const SizedBox(height: 48),
+        const SizedBox(height: 16),
+        const SavedTextListHeader(),
         Expanded(
           child: _buildListOrPlaceholder(savedTexts),
         ),
@@ -41,14 +43,14 @@ class HomePage extends StatelessWidget {
 
   Widget _buildListOrPlaceholder(List<TextInfo> savedTexts) {
     if (savedTexts.isEmpty) {
-      return Text('Placeholder'); // TODO
+      return const Text('Placeholder'); // TODO
     } else {
       return ListView.separated(
         itemCount: savedTexts.length,
         separatorBuilder: (context, index) => const Divider(height: 1),
         itemBuilder: (context, index) {
           final item = savedTexts[index];
-          return SavedText(
+          return SavedTextItem(
             originalText: item.originalText,
             translation: item.translations.first.text,
             wordsTranscription: item.ipaTranscription.words,

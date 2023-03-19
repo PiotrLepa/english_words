@@ -2,6 +2,9 @@
   "appName": "Angielskie Słówka",
   "homeInputHint":"Wpisz tekst",
   "homeTranslateButton": "Przetłumacz",
+  "homeSavedTextHeaderOriginalText": "Angielski",
+  "homeSavedTextHeaderTranslation": "Polski",
+  "homeSavedTextHeaderTranscription": "Transkrypcja",
   "homeTranslatingButton": "Tłumaczenie...",
   "progressButtonLoading": "Ładowanie...",
   "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia"
