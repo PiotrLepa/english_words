@@ -16,6 +16,9 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetTextInfoUseCase _getTextInfoUseCase;
 
+  TextInfo? _recentlyDeletedText;
+  int? _recentlyDeletedTextIndex;
+
   HomeBloc(this._getTextInfoUseCase)
       : super(const HomeState.loading(
           savedTexts: [
@@ -255,6 +258,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         )) {
     on<TextSubmitted>(_onTextSubmitted);
     on<SavedTextDeletedEvent>(_onSavedTextDeleted);
+    on<UndoSavedTextDeletion>(_onUndoSavedTextDeletion);
   }
 
   Future<void> _onTextSubmitted(
@@ -300,10 +304,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SavedTextDeletedEvent event,
     Emitter<HomeState> emit,
   ) async {
+    _recentlyDeletedText = event.item;
+    _recentlyDeletedTextIndex = state.savedTexts.indexOf(event.item);
+
     emit(HomeState.savedTextDeleted(
       isTranslatingInProgress: false,
       savedTexts:
           state.savedTexts.where((element) => element != event.item).toList(),
     ));
+  }
+
+  Future<void> _onUndoSavedTextDeletion(
+    UndoSavedTextDeletion event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeState.loading( // TODO new state?
+      isTranslatingInProgress: false,
+      savedTexts: state.savedTexts.toList()
+        ..insert(_recentlyDeletedTextIndex!, _recentlyDeletedText!),
+    ));
+    _recentlyDeletedText = null;
+    _recentlyDeletedTextIndex = null;
   }
 }

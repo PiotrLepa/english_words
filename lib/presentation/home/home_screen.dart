@@ -80,6 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(context.strings.homeSavedTextDeleted),
+        action: SnackBarAction(
+          label: context.strings.homeUndoTextDeletion,
+          onPressed: () {
+            context.read<HomeBloc>().add(const HomeEvent.undoSavedTextDeletion());
+          },
+        ),
       ),
     );
   }

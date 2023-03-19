@@ -4,5 +4,9 @@ part of 'home_bloc.dart';
 class HomeEvent with _$HomeEvent {
   const factory HomeEvent.textSubmitted(String text) = TextSubmitted;
 
-  const factory HomeEvent.savedTextDeleted(TextInfo item) = SavedTextDeletedEvent;
+  const factory HomeEvent.savedTextDeleted(TextInfo item) =
+      SavedTextDeletedEvent;
+
+  const factory HomeEvent.undoSavedTextDeletion() =
+      UndoSavedTextDeletion;
 }
