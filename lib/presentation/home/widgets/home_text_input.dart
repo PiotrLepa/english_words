@@ -1,5 +1,4 @@
 import 'package:english_words/presentation/extensions.dart';
-import 'package:english_words/presentation/home/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 
 class HomeTextInput extends StatefulWidget {
@@ -19,7 +18,6 @@ class HomeTextInput extends StatefulWidget {
 }
 
 class _HomeTextInputState extends State<HomeTextInput> {
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -38,13 +36,11 @@ class _HomeTextInputState extends State<HomeTextInput> {
           ),
         ),
         const SizedBox(width: 16),
-        LoadingButton(
+        FloatingActionButton(
           onPressed: () {
             widget.onTextSubmitted(widget.textEditController.value.text);
           },
-          isLoading: widget.isTranslatingInProgress,
-          text: context.strings.homeTranslateButton,
-          loadingText: context.strings.homeTranslatingButton,
+          child: const Icon(Icons.keyboard_arrow_right),
         ),
       ],
     );

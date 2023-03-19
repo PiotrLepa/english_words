@@ -1,11 +1,9 @@
 {
   "appName": "English Words",
-  "homeInputHint":"Enter a text",
+  "homeInputHint":"Enter a text to be translated",
   "homeTranslateButton": "Translate",
   "homeSavedTextHeaderOriginalText": "English",
   "homeSavedTextHeaderTranslation": "Polish",
   "homeSavedTextHeaderTranscription": "Transcription",
-  "homeTranslatingButton": "Translating...",
-  "progressButtonLoading": "Loading...",
   "translationFailureMessage": "An error occurred during the translation"
 }
