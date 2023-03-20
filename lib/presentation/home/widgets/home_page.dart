@@ -1,4 +1,4 @@
-import 'package:english_words/domain/model/text_info/text_info.dart';
+import 'package:english_words/domain/model/text_info/saved_text.dart';
 import 'package:english_words/presentation/home/widgets/home_text_input.dart';
 import 'package:english_words/presentation/home/widgets/saved_text_item.dart';
 import 'package:english_words/presentation/home/widgets/saved_text_list_header.dart';
@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
-  final void Function(TextInfo item) onTextDeleted;
-  final List<TextInfo> savedTexts;
+  final void Function(SavedText item) onTextDeleted;
+  final List<SavedText> savedTexts;
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
 
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildListOrPlaceholder(List<TextInfo> savedTexts) {
+  Widget _buildListOrPlaceholder(List<SavedText> savedTexts) {
     if (savedTexts.isEmpty) {
       return const Text('Placeholder'); // TODO
     } else {

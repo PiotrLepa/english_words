@@ -2,13 +2,14 @@ import 'package:english_words/domain/model/ipa_transcription/ipa_transcription.d
 import 'package:english_words/domain/model/translation/translation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'text_info.freezed.dart';
+part 'saved_text.freezed.dart';
 
 @freezed
-class TextInfo with _$TextInfo {
-  const factory TextInfo({
+class SavedText with _$SavedText {
+  const factory SavedText({
     required String originalText,
     required List<Translation> translations,
     required IpaTranscription ipaTranscription,
-  }) = _TextInfo;
+    required bool isLearned,
+  }) = _SavedText;
 }

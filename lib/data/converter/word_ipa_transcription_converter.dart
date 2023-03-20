@@ -8,7 +8,13 @@ import 'package:injectable/injectable.dart';
 class IpaWordTranscriptionConverter {
   WordIpaTranscription toDomain(WordIpaTranscriptionResponse response) =>
       WordIpaTranscription(
-        isSuccessful: response.isSuccessfull,
+        isSuccessful: response.isSuccessful,
         text: response.text,
+      );
+
+  WordIpaTranscriptionResponse toData(WordIpaTranscription body) =>
+      WordIpaTranscriptionResponse(
+        isSuccessful: body.isSuccessful,
+        text: body.text,
       );
 }

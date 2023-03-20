@@ -7,6 +7,7 @@ part 'ipa_transcription_response.g.dart';
 
 @freezed
 class IpaTranscriptionResponse with _$IpaTranscriptionResponse {
+  @JsonSerializable(explicitToJson: true)
   const factory IpaTranscriptionResponse({
     required String dialect,
     required List<WordIpaTranscriptionResponse> words,

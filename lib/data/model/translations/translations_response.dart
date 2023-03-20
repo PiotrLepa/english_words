@@ -13,4 +13,9 @@ class TranslationsResponse with _$TranslationsResponse {
 
   factory TranslationsResponse.fromJson(Map<String, dynamic> json) =>
       _$TranslationsResponseFromJson(json);
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    return super.toJson();
+  }
 }

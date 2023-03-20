@@ -1,4 +1,4 @@
-import 'package:english_words/data/model/converter/ipa_transcription_converter.dart';
+import 'package:english_words/data/converter/ipa_transcription_converter.dart';
 import 'package:english_words/data/service/ipa_transcription/ipa_transcription_service.dart';
 import 'package:english_words/domain/model/ipa_transcription/ipa_transcription.dart';
 import 'package:english_words/domain/repository/ipa_transcription_repository.dart';

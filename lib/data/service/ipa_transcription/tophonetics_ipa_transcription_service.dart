@@ -52,7 +52,7 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
           .getElementById(_idOfElementWithTranscription)!
           .children
           .map((element) => WordIpaTranscriptionResponse(
-                isSuccessfull: element.className != _missingTranscription,
+                isSuccessful: element.className != _missingTranscription,
                 text: element.text,
               ))
           .toList()

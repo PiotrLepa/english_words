@@ -7,7 +7,7 @@ part 'word_ipa_transcription_response.g.dart';
 @freezed
 class WordIpaTranscriptionResponse with _$WordIpaTranscriptionResponse {
   const factory WordIpaTranscriptionResponse({
-    required bool isSuccessfull,
+    required bool isSuccessful,
     required String text,
   }) = _WordIpaTranscriptionResponse;
 

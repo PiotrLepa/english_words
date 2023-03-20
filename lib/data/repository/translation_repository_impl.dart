@@ -1,4 +1,4 @@
-import 'package:english_words/data/model/converter/translation_converter.dart';
+import 'package:english_words/data/converter/translation_converter.dart';
 import 'package:english_words/domain/repository/translation_repository.dart';
 import 'package:english_words/data/service/translation/translation_service.dart';
 import 'package:english_words/domain/model/translation/translation.dart';

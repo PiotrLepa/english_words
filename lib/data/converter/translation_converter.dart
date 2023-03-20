@@ -4,8 +4,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TranslationConverter {
-  Translation toDomain(TranslationResponse response) =>
-      Translation(
+  Translation toDomain(TranslationResponse response) => Translation(
+        detectedSourceLanguage: response.detectedSourceLanguage,
+        text: response.text,
+      );
+
+  TranslationResponse toData(Translation response) => TranslationResponse(
         detectedSourceLanguage: response.detectedSourceLanguage,
         text: response.text,
       );
