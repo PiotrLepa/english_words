@@ -17,6 +17,7 @@ class FirestoreService {
 
   Future<List<SavedTextResponse>> getSavedTexts() => _firestore
       .collection(_wordsCollection)
+      .orderBy('creationDate', descending: true)
       .get()
       .then((snapshot) => snapshot.docs
           .map((doc) => SavedTextResponse.fromJsonFirestore(

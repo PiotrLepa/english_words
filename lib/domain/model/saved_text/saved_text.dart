@@ -12,5 +12,6 @@ class SavedText with _$SavedText {
     required List<Translation> translations,
     required IpaTranscription ipaTranscription,
     required bool isLearned,
+    required DateTime creationDate,
   }) = _SavedText;
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/data/converter/ipa_transcription_converter.dart';
 import 'package:english_words/data/converter/translation_converter.dart';
 import 'package:english_words/data/model/saved_text/saved_text_response.dart';
@@ -22,6 +23,7 @@ class SavedTextConverter {
         ipaTranscription:
             _ipaTranscriptionConverter.toDomain(response.ipaTranscription),
         isLearned: response.isLearned,
+        creationDate: response.creationDate.toDate(),
       );
 
   SavedTextResponse toData(SavedText body) => SavedTextResponse(
@@ -32,5 +34,6 @@ class SavedTextConverter {
         ipaTranscription:
             _ipaTranscriptionConverter.toData(body.ipaTranscription),
         isLearned: body.isLearned,
+        creationDate: Timestamp.fromDate(body.creationDate),
       );
 }

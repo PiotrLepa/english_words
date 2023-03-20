@@ -31,6 +31,7 @@ class GetInfoAndSaveTextUseCase {
           translations: translations,
           ipaTranscription: ipaTranscription,
           isLearned: false,
+          creationDate: DateTime.now(),
         );
       }).then((text) =>
           _saveTextUseCase.invoke(text).then((value) => Future.value(text)));

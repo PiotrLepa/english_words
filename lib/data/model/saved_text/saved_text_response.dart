@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:english_words/data/json/firebase_timestamp_json_converter.dart';
 import 'package:english_words/data/model/ipa_transcription/ipa_transcription_response.dart';
 import 'package:english_words/data/model/translation/translation_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,6 +17,7 @@ class SavedTextResponse with _$SavedTextResponse {
     required List<TranslationResponse> translations,
     required IpaTranscriptionResponse ipaTranscription,
     required bool isLearned,
+    @FirebaseTimestampJsonConverter() required Timestamp creationDate,
   }) = _SavedTextResponse;
 
   factory SavedTextResponse.fromJson(Map<String, dynamic> json) =>
