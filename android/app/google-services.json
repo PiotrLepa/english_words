@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736998502997",
+    "project_id": "english-words-71def",
+    "storage_bucket": "english-words-71def.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736998502997:android:4dea54862a579f0c6f9adc",
+        "android_client_info": {
+          "package_name": "pl.piotr.englishwords.english_words"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736998502997-n5mrnh51bo3sq50kikluav1or6k23883.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGJ1cRBzq43cEuPpkUyuY1jg4Ziba4A5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736998502997-n5mrnh51bo3sq50kikluav1or6k23883.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
