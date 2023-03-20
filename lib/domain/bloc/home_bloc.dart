@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:english_words/domain/model/text_info/saved_text.dart';
+import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_saved_texts_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

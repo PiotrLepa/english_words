@@ -1,6 +1,6 @@
 import 'package:english_words/data/converter/saved_text_converter.dart';
 import 'package:english_words/data/service/firestore/firestore_service.dart';
-import 'package:english_words/domain/model/text_info/saved_text.dart';
+import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/repository/saved_texts_repository.dart';
 import 'package:injectable/injectable.dart';
 

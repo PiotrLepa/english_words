@@ -7,6 +7,7 @@ part 'saved_text.freezed.dart';
 @freezed
 class SavedText with _$SavedText {
   const factory SavedText({
+    String? id,
     required String originalText,
     required List<Translation> translations,
     required IpaTranscription ipaTranscription,

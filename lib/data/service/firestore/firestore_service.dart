@@ -13,16 +13,18 @@ class FirestoreService {
   FirestoreService(this._firestore);
 
   Future<void> saveText(SavedTextResponse text) =>
-      _firestore
-          .collection(_wordsCollection).add(text.toJson());
+      _firestore.collection(_wordsCollection).add(text.toJson());
 
   Future<List<SavedTextResponse>> getSavedTexts() => _firestore
       .collection(_wordsCollection)
       .get()
       .then((snapshot) => snapshot.docs
-          .map((e) => e.data())
-          .map((json) => SavedTextResponse.fromJson(json))
+          .map((doc) => SavedTextResponse.fromJsonFirestore(
+                id: doc.id,
+                json: doc.data(),
+              ))
           .toList());
 
-  dynamic encodeNestedFieldsInJson(Map<String, dynamic> json) => jsonDecode(jsonEncode(json));
+  dynamic encodeNestedFieldsInJson(Map<String, dynamic> json) =>
+      jsonDecode(jsonEncode(json));
 }

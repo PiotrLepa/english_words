@@ -1,7 +1,7 @@
 import 'package:english_words/data/converter/ipa_transcription_converter.dart';
 import 'package:english_words/data/converter/translation_converter.dart';
 import 'package:english_words/data/model/saved_text/saved_text_response.dart';
-import 'package:english_words/domain/model/text_info/saved_text.dart';
+import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -15,6 +15,7 @@ class SavedTextConverter {
   );
 
   SavedText toDomain(SavedTextResponse response) => SavedText(
+        id: response.id,
         originalText: response.originalText,
         translations:
             response.translations.map(_translationConverter.toDomain).toList(),
@@ -24,6 +25,7 @@ class SavedTextConverter {
       );
 
   SavedTextResponse toData(SavedText body) => SavedTextResponse(
+        id: body.id,
         originalText: body.originalText,
         translations:
             body.translations.map(_translationConverter.toData).toList(),

@@ -1,4 +1,4 @@
-import 'package:english_words/domain/model/text_info/saved_text.dart';
+import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';

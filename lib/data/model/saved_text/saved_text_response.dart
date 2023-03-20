@@ -10,6 +10,7 @@ part 'saved_text_response.g.dart';
 class SavedTextResponse with _$SavedTextResponse {
   @JsonSerializable(explicitToJson: true)
   const factory SavedTextResponse({
+    @JsonKey(includeToJson: false) String? id,
     required String originalText,
     required List<TranslationResponse> translations,
     required IpaTranscriptionResponse ipaTranscription,
@@ -18,4 +19,10 @@ class SavedTextResponse with _$SavedTextResponse {
 
   factory SavedTextResponse.fromJson(Map<String, dynamic> json) =>
       _$SavedTextResponseFromJson(json);
+
+  factory SavedTextResponse.fromJsonFirestore({
+    required String id,
+    required Map<String, dynamic> json,
+  }) =>
+      SavedTextResponse.fromJson({...json, 'id': id});
 }
