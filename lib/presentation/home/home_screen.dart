@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:english_words/domain/bloc/home_bloc.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_page.dart';
@@ -5,6 +6,7 @@ import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 

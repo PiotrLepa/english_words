@@ -53,16 +53,18 @@ packages:
     dependency: "direct main"
     description:
       name: auto_route
-      url: "https://pub.dartlang.org"
+      sha256: "7faca1e83d05794deec4e160976c06345da3eeaca7b0e78e39edd657c1b86335"
+      url: "https://pub.dev"
     source: hosted
-    version: "5.0.4"
+    version: "6.0.0+1"
   auto_route_generator:
     dependency: "direct dev"
     description:
       name: auto_route_generator
-      url: "https://pub.dartlang.org"
+      sha256: a3f11c3b1e6e884d1592924f3b7212855f1c7c8791c12d3b41b87ab81fb9d3b8
+      url: "https://pub.dev"
     source: hosted
-    version: "5.0.3"
+    version: "6.0.0"
   bloc:
     dependency: transitive
     description:
