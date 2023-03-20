@@ -8,5 +8,6 @@
   "homeTextAlreadySavedError": "Text already saved",
   "homeSavedTextDeleted": "Saved text deleted",
   "homeUndoTextDeletion": "Undo",
+  "homeAddYourFirstTranslation": "Add your first translation",
   "translationFailureMessage": "An error occurred during the translation"
 }

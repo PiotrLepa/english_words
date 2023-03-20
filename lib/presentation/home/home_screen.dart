@@ -49,17 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         builder: (context, state) {
-          return HomePage(
-            savedTexts: state.savedTexts,
-            isTranslatingInProgress: state.status == HomeStatus.translationInProgress,
-            textEditController: _textEditController,
-            onTextSubmitted: (text) {
-              context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
-            },
-            onTextDeleted: (item) {
-              context.read<HomeBloc>().add(HomeEvent.savedTextDeleted(item));
-            },
-          );
+          switch (state.status) {
+            case HomeStatus.initialLoading:
+              return const Center(child: CircularProgressIndicator());
+            default:
+              return HomePage(
+                savedTexts: state.savedTexts,
+                isTranslatingInProgress:
+                    state.status == HomeStatus.translationInProgress,
+                textEditController: _textEditController,
+                onTextSubmitted: (text) {
+                  context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
+                },
+                onTextDeleted: (item) {
+                  context
+                      .read<HomeBloc>()
+                      .add(HomeEvent.savedTextDeleted(item));
+                },
+              );
+          }
         },
       ),
     );
