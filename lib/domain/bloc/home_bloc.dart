@@ -24,13 +24,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(
     this._getSavedTextsUseCase,
     this._getInfoAndSaveTextUseCase,
-  ) : super(const HomeState.initialLoading(
+  ) : super(const HomeState(
+          status: HomeStatus.initialLoading,
           savedTexts: [],
-          isTranslatingInProgress: false,
         )) {
     on<ScreenStarted>(_onScreenStarted);
     on<TextSubmitted>(_onTextSubmitted);
-    on<SavedTextDeletedEvent>(_onSavedTextDeleted);
+    on<SavedTextDeleted>(_onSavedTextDeleted);
     on<UndoSavedTextDeletion>(_onUndoSavedTextDeletion);
   }
 
@@ -39,15 +39,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     await _getSavedTextsUseCase.invoke().then((savedTexts) {
-      emit(HomeState.initiallyLoaded(
-        isTranslatingInProgress: false,
+      emit(state.copyWith(
+        status: HomeStatus.initiallyLoaded,
         savedTexts: savedTexts,
       ));
     }).catchError((error, stackTrace) {
-      emit(HomeState.translationFailure(
-        // TODO create new state?
-        isTranslatingInProgress: false,
-        savedTexts: state.savedTexts,
+      emit(state.copyWith(
+        status: HomeStatus.initialFailure,
       ));
       log(
         'getting saved texts failed',
@@ -62,28 +60,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     final trimmedText = event.text.trim();
-    if (trimmedText.isEmpty || state.isTranslatingInProgress) return;
+    if (trimmedText.isEmpty ||
+        state.status == HomeStatus.translationInProgress) {
+      return;
+    }
+
     if (_isTextAlreadySaved(trimmedText)) {
-      emit(HomeState.textAlreadySaved(
-        isTranslatingInProgress: false,
-        savedTexts: state.savedTexts,
+      emit(state.copyWith(
+        status: HomeStatus.textAlreadySaved,
       ));
       return;
     }
 
-    emit(HomeState.initiallyLoaded( // TODO new state?
-      isTranslatingInProgress: true,
-      savedTexts: state.savedTexts,
+    emit(state.copyWith(
+      status: HomeStatus.translationInProgress,
     ));
+
     await _getInfoAndSaveTextUseCase.invoke(trimmedText).then((textInfo) {
-      emit(HomeState.translationSuccessful(
-        isTranslatingInProgress: false,
+      emit(state.copyWith(
+        status: HomeStatus.translationSuccessful,
         savedTexts: [textInfo, ...state.savedTexts],
       ));
     }).catchError((error, stackTrace) {
-      emit(HomeState.translationFailure(
-        isTranslatingInProgress: false,
-        savedTexts: state.savedTexts,
+      emit(state.copyWith(
+        status: HomeStatus.translationFailure,
       ));
       log(
         'getting text info and saving failed',
@@ -97,16 +97,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       state.savedTexts.any((element) => element.originalText == text);
 
   Future<void> _onSavedTextDeleted(
-    SavedTextDeletedEvent event,
+    SavedTextDeleted event,
     Emitter<HomeState> emit,
   ) async {
     _recentlyDeletedText = event.item;
     _recentlyDeletedTextIndex = state.savedTexts.indexOf(event.item);
 
-    emit(HomeState.savedTextDeleted(
-      isTranslatingInProgress: false,
-      savedTexts:
-          state.savedTexts.where((element) => element != event.item).toList(),
+    emit(state.copyWith(
+      status: HomeStatus.savedTextDeleted,
     ));
   }
 
@@ -114,11 +112,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     UndoSavedTextDeletion event,
     Emitter<HomeState> emit,
   ) async {
-    emit(HomeState.initiallyLoaded( // TODO new state?
-      isTranslatingInProgress: false,
+    emit(state.copyWith(
+      status: HomeStatus.undoSavedTextDeletion,
       savedTexts: state.savedTexts.toList()
         ..insert(_recentlyDeletedTextIndex!, _recentlyDeletedText!),
     ));
+
     _recentlyDeletedText = null;
     _recentlyDeletedTextIndex = null;
   }

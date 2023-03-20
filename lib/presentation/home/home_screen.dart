@@ -29,19 +29,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (_, newState) {
-          newState.maybeMap(
-            translationSuccessful: (_) => _clearInput(),
-            textAlreadySaved: (_) =>
-                _showTextAlreadySavedErrorSnackBar(context),
-            translationFailure: (_) => _showTranslationFailureSnackBar(context),
-            savedTextDeleted: (_) => _showSavedTextDeletedSnackBar(context),
-            orElse: () {},
-          );
+          switch (newState.status) {
+            case HomeStatus.translationSuccessful:
+              _clearInput();
+              break;
+            case HomeStatus.translationFailure:
+              _showTranslationFailureSnackBar(context);
+              break;
+            case HomeStatus.textAlreadySaved:
+              _showTextAlreadySavedErrorSnackBar(context);
+              break;
+            case HomeStatus.savedTextDeleted:
+              _showSavedTextDeletedSnackBar(context);
+              break;
+            default:
+              break;
+          }
         },
         builder: (context, state) {
           return HomePage(
             savedTexts: state.savedTexts,
-            isTranslatingInProgress: state.isTranslatingInProgress,
+            isTranslatingInProgress: state.status == HomeStatus.translationInProgress,
             textEditController: _textEditController,
             onTextSubmitted: (text) {
               context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
@@ -83,7 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
         action: SnackBarAction(
           label: context.strings.homeUndoTextDeletion,
           onPressed: () {
-            context.read<HomeBloc>().add(const HomeEvent.undoSavedTextDeletion());
+            context
+                .read<HomeBloc>()
+                .add(const HomeEvent.undoSavedTextDeletion());
           },
         ),
       ),
