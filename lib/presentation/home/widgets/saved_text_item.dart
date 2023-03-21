@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 class SavedTextItem extends StatelessWidget {
   final SavedText item;
   final Color backgroundColor;
+  final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onItemDeleted;
 
   const SavedTextItem({
     Key? key,
     required this.item,
     required this.backgroundColor,
+    required this.onTranscriptionLongPressed,
     required this.onItemDeleted,
   }) : super(key: key);
 
@@ -53,10 +55,15 @@ class SavedTextItem extends StatelessWidget {
             ))
         .toList();
 
-    return RichText(
-      text: TextSpan(
-        text: '',
-        children: textSpans,
+    return GestureDetector(
+      onLongPress: () {
+        onTranscriptionLongPressed(item);
+      },
+      child: RichText(
+        text: TextSpan(
+          text: '',
+          children: textSpans,
+        ),
       ),
     );
   }

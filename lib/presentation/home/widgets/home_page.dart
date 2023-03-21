@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
   final void Function(SavedText item) onTextDeleted;
+  final void Function(SavedText item) onTranscriptionLongPressed;
   final List<SavedText> savedTexts;
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
     required this.onTextSubmitted,
+    required this.onTranscriptionLongPressed,
     required this.onTextDeleted,
     required this.savedTexts,
     required this.isTranslatingInProgress,
@@ -82,6 +84,7 @@ class HomePage extends StatelessWidget {
                   item: item,
                   backgroundColor:
                       ThemeProvider.of(context).getListItemColor(index),
+                  onTranscriptionLongPressed: onTranscriptionLongPressed,
                   onItemDeleted: onTextDeleted,
                 );
               },

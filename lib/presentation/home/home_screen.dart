@@ -1,10 +1,12 @@
 import 'package:auto_route/annotations.dart';
+import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/home_bloc.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_page.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -15,11 +17,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _textEditController = TextEditingController();
+
+  late TextEditingController _textEditController;
+  late FlutterTts _textToSpeech;
 
   @override
-  void dispose() {
+  void initState() {
+    super.initState();
+    _textEditController = TextEditingController();
+    _textToSpeech = getIt<FlutterTts>();
+  }
+
+  @override
+  Future<void> dispose() async {
     _textEditController.dispose();
+    await _textToSpeech.stop();
     super.dispose();
   }
 
@@ -60,6 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 textEditController: _textEditController,
                 onTextSubmitted: (text) {
                   context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
+                },
+                onTranscriptionLongPressed: (item) {
+                  _textToSpeech.speak(item.originalText);
                 },
                 onTextDeleted: (item) {
                   context
