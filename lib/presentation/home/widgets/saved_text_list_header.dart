@@ -28,14 +28,17 @@ class SavedTextListHeader extends StatelessWidget {
     );
   }
 
-  Text _buildText(BuildContext context, String text) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-        color: ThemeProvider.of(context).textColorInverted,
+  Widget _buildText(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: ThemeProvider.of(context).textColorInverted,
+        ),
       ),
     );
   }

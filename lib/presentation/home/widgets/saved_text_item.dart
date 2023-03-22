@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
@@ -31,7 +33,10 @@ class SavedTextItem extends StatelessWidget {
       },
       child: BaseSavedTextListItem(
         backgroundDecoration: BoxDecoration(color: backgroundColor),
-        firstWidget: Text(item.originalText),
+        firstWidget: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text(item.originalText),
+        ),
         secondWidget: _buildTranscription(context),
         thirdWidget: _buildTranslation(),
       ),
@@ -59,10 +64,15 @@ class SavedTextItem extends StatelessWidget {
       onLongPress: () {
         onTranscriptionLongPressed(item);
       },
-      child: RichText(
-        text: TextSpan(
-          text: '',
-          children: textSpans,
+      child: Container(
+        height: double.infinity,
+        alignment: Alignment.centerLeft,
+        color: Colors.transparent,
+        child: RichText(
+          text: TextSpan(
+            text: '',
+            children: textSpans,
+          ),
         ),
       ),
     );

@@ -1,6 +1,3 @@
-import 'package:english_words/domain/model/word_ipa_transcription/word_ipa_transcription.dart';
-import 'package:english_words/gen/fonts.gen.dart';
-import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class BaseSavedTextListItem extends StatelessWidget {
@@ -26,25 +23,13 @@ class BaseSavedTextListItem extends StatelessWidget {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            _buildPart(padding: padding, child: firstWidget),
+            Expanded(child: firstWidget),
             const VerticalDivider(width: padding),
-            _buildPart(padding: padding, child: secondWidget),
+            Expanded(child: secondWidget),
             const VerticalDivider(width: padding),
-            _buildPart(padding: padding, child: thirdWidget),
+            Expanded(child: thirdWidget),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildPart({
-    required double padding,
-    required Widget child,
-  }) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: padding),
-        child: child,
       ),
     );
   }
