@@ -65,16 +65,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
+    emit(state.copyWith(
+      status: HomeStatus.translationInProgress,
+    ));
+
     if (_isTextAlreadySaved(trimmedText)) {
       emit(state.copyWith(
         status: HomeStatus.textAlreadySaved,
       ));
       return;
     }
-
-    emit(state.copyWith(
-      status: HomeStatus.translationInProgress,
-    ));
 
     await _getInfoAndSaveTextUseCase.invoke(trimmedText).then((textInfo) {
       emit(state.copyWith(
