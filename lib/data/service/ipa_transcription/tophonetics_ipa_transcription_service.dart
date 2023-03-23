@@ -10,8 +10,10 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: IpaTranscriptionService)
 class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
   static const _httpMethod = 'POST';
-  static const _dialectName = 'dialect';
+  static const _dialectName = 'output_dialect';
   static const _dialectValue = 'am';
+  static const _submitName = 'submit';
+  static const _submitValue = 'Show transcription';
   static const _fieldText = 'text_to_transcribe';
   static const _headers = {'Content-Type': 'application/x-www-form-urlencoded'};
   static const _idOfElementWithTranscription = 'transcr_output';
@@ -25,6 +27,7 @@ class ToPhoneticsIpaTranscriptionService implements IpaTranscriptionService {
         ..headers.addAll(_headers)
         ..bodyFields = {
           _dialectName: _dialectValue,
+          _submitName: _submitValue,
           _fieldText: text,
         };
 
