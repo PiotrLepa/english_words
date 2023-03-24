@@ -15,8 +15,8 @@ class SavedTextRepositoryImpl extends SavedTextRepository {
   );
 
   @override
-  Future<List<SavedText>> get() =>
-      _service.get().then((list) => list.map(_converter.toDomain).toList());
+  Future<List<SavedText>> getTextsToLearn() =>
+      _service.getTextsToLearn().then((list) => list.map(_converter.toDomain).toList());
 
   @override
   Future<void> save(SavedText text) => _service.save(_converter.toData(text));

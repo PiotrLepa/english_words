@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
   final void Function(SavedText item) onTranscriptionLongPressed;
+  final void Function(SavedText item) onTextAddedToLearned;
   final void Function(SavedText item) onTextDeleted;
   final List<SavedText> savedTexts;
   final bool isTranslatingInProgress;
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
     Key? key,
     required this.onTextSubmitted,
     required this.onTranscriptionLongPressed,
+    required this.onTextAddedToLearned,
     required this.onTextDeleted,
     required this.savedTexts,
     required this.isTranslatingInProgress,
@@ -85,7 +87,8 @@ class HomePage extends StatelessWidget {
                   backgroundColor:
                       ThemeProvider.of(context).getListItemColor(index),
                   onTranscriptionLongPressed: onTranscriptionLongPressed,
-                  onItemDeleted: onTextDeleted,
+                  onTextAddedToLearned: onTextAddedToLearned,
+                  onTextDeleted: onTextDeleted,
                 );
               },
             ),

@@ -6,7 +6,8 @@
   "homeSavedTextHeaderTranslation": "Polski",
   "homeSavedTextHeaderTranscription": "Transkrypcja",
   "homeTextAlreadySavedError": "Tekst jest już zapisany",
-  "homeSavedTextDeleted": "Zapisany tekst został usunięty",
+  "homeSavedTextLearned": "Tekst dodany do nauczonych",
+  "homeSavedTextDeleted": "Tekst został usunięty",
   "homeUndoTextDeletion": "Cofnij",
   "homeAddYourFirstTranslation": "Dodaj swoje pierwsze tłumacznie",
   "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia"

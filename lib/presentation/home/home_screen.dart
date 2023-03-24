@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   late TextEditingController _textEditController;
   late FlutterTts _textToSpeech;
 
@@ -53,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
             case HomeStatus.textAlreadySaved:
               _showTextAlreadySavedErrorSnackBar(context);
               break;
+            case HomeStatus.savedTextLearned:
+              _showSavedTextLearnedSnackBar(context);
+              break;
             case HomeStatus.savedTextDeleted:
               _showSavedTextDeletedSnackBar(context);
               break;
@@ -75,6 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 onTranscriptionLongPressed: (item) {
                   _textToSpeech.speak(item.originalText);
+                },
+                onTextAddedToLearned: (item) {
+                  context
+                      .read<HomeBloc>()
+                      .add(HomeEvent.textAddedToLearned(item));
                 },
                 onTextDeleted: (item) {
                   context
@@ -109,6 +116,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showSavedTextLearnedSnackBar(BuildContext context) {
+    _showSingleSnackBar(
+      SnackBar(
+        content: Text(context.strings.homeSavedTextLearned),
+        action: SnackBarAction(
+          label: context.strings.homeUndoTextDeletion,
+          onPressed: () {
+            context
+                .read<HomeBloc>()
+                .add(const HomeEvent.undoAddingTextToLearned());
+          },
+        ),
+      ),
+    );
+  }
+
   void _showSavedTextDeletedSnackBar(BuildContext context) {
     _showSingleSnackBar(
       SnackBar(
@@ -118,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             context
                 .read<HomeBloc>()
-                .add(const HomeEvent.undoSavedTextDeletion());
+                .add(const HomeEvent.undoDeletingSavedText());
           },
         ),
       ),

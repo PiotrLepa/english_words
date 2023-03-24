@@ -6,7 +6,8 @@
   "homeSavedTextHeaderTranslation": "Polish",
   "homeSavedTextHeaderTranscription": "Transcription",
   "homeTextAlreadySavedError": "Text already saved",
-  "homeSavedTextDeleted": "Saved text deleted",
+  "homeSavedTextLearned": "Text learned",
+  "homeSavedTextDeleted": "Text deleted",
   "homeUndoTextDeletion": "Undo",
   "homeAddYourFirstTranslation": "Add your first translation",
   "translationFailureMessage": "An error occurred during the translation"

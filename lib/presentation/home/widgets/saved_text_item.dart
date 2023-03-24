@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
@@ -10,14 +8,16 @@ class SavedTextItem extends StatelessWidget {
   final SavedText item;
   final Color backgroundColor;
   final void Function(SavedText item) onTranscriptionLongPressed;
-  final void Function(SavedText item) onItemDeleted;
+  final void Function(SavedText item) onTextAddedToLearned;
+  final void Function(SavedText item) onTextDeleted;
 
   const SavedTextItem({
     Key? key,
     required this.item,
     required this.backgroundColor,
     required this.onTranscriptionLongPressed,
-    required this.onItemDeleted,
+    required this.onTextAddedToLearned,
+    required this.onTextDeleted,
   }) : super(key: key);
 
   @override
@@ -25,11 +25,18 @@ class SavedTextItem extends StatelessWidget {
     return Dismissible(
       key: Key(item.originalText),
       background: Container(
+        color: ThemeProvider.of(context).accentColor,
+      ),
+      secondaryBackground: Container(
         color: ThemeProvider.of(context).listItemDelete,
       ),
-      direction: DismissDirection.endToStart,
+      direction: DismissDirection.horizontal,
       onDismissed: (direction) {
-        onItemDeleted(item);
+        if (direction == DismissDirection.startToEnd) {
+          onTextAddedToLearned(item);
+        } else if (direction == DismissDirection.endToStart) {
+          onTextDeleted(item);
+        }
       },
       child: BaseSavedTextListItem(
         backgroundDecoration: BoxDecoration(color: backgroundColor),

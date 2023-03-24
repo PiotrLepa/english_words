@@ -6,9 +6,12 @@ class HomeEvent with _$HomeEvent {
 
   const factory HomeEvent.textSubmitted(String text) = TextSubmitted;
 
-  const factory HomeEvent.savedTextDeleted(SavedText item) =
-      SavedTextDeleted;
+  const factory HomeEvent.textAddedToLearned(SavedText item) =
+      TextAddedToLearned;
 
-  const factory HomeEvent.undoSavedTextDeletion() =
-      UndoSavedTextDeletion;
+  const factory HomeEvent.undoAddingTextToLearned() = UndoAddingTextToLearned;
+
+  const factory HomeEvent.savedTextDeleted(SavedText item) = SavedTextDeleted;
+
+  const factory HomeEvent.undoDeletingSavedText() = UndoDeletingSavedText;
 }
