@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showErrorSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    _showSingleSnackBar(
       SnackBar(
         content: Text(message),
         backgroundColor: ThemeProvider.of(context).errorColor,
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showSavedTextDeletedSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    _showSingleSnackBar(
       SnackBar(
         content: Text(context.strings.homeSavedTextDeleted),
         action: SnackBarAction(
@@ -123,5 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _showSingleSnackBar(SnackBar snackBar) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

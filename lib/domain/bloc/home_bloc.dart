@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:english_words/domain/model/deleted_text/deleted_text.dart';
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_saved_texts_use_case.dart';
+import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -18,14 +20,15 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetSavedTextsUseCase _getSavedTextsUseCase;
   final GetInfoAndSaveTextUseCase _getInfoAndSaveTextUseCase;
+  final SaveTextUseCase _saveTextUseCase;
   final DeleteSavedTextUseCase _deleteSavedTextUseCase;
 
-  SavedText? _recentlyDeletedText;
-  int? _recentlyDeletedTextIndex;
+  DeletedText? _recentlyDeletedText;
 
   HomeBloc(
     this._getSavedTextsUseCase,
     this._getInfoAndSaveTextUseCase,
+    this._saveTextUseCase,
     this._deleteSavedTextUseCase,
   ) : super(const HomeState(
           status: HomeStatus.initialLoading,
@@ -103,8 +106,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SavedTextDeleted event,
     Emitter<HomeState> emit,
   ) async {
-    _recentlyDeletedText = event.item;
-    _recentlyDeletedTextIndex = state.savedTexts.indexOf(event.item);
+    _recentlyDeletedText = DeletedText(
+      index: state.savedTexts.indexOf(event.item),
+      text: event.item,
+    );
+
+    emit(state.copyWith(
+      status: HomeStatus.savedTextDeleted,
+      savedTexts:
+          state.savedTexts.where((text) => text.id != event.item.id).toList(),
+    ));
 
     await _deleteSavedTextUseCase
         .invoke(event.item.id!)
@@ -114,10 +125,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         error: error,
         stackTrace: stackTrace,
       );
-    }).whenComplete(() {
-      emit(state.copyWith(
-        status: HomeStatus.savedTextDeleted,
-      ));
     });
   }
 
@@ -125,13 +132,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     UndoSavedTextDeletion event,
     Emitter<HomeState> emit,
   ) async {
+    final deletedText = _recentlyDeletedText;
+    if (deletedText == null) return;
+
     emit(state.copyWith(
       status: HomeStatus.undoSavedTextDeletion,
       savedTexts: state.savedTexts.toList()
-        ..insert(_recentlyDeletedTextIndex!, _recentlyDeletedText!),
+        ..insert(deletedText.index, deletedText.text),
     ));
 
     _recentlyDeletedText = null;
-    _recentlyDeletedTextIndex = null;
+
+    await _saveTextUseCase.invoke(deletedText.text).catchError((error, stackTrace) {
+      log(
+        'restoring deleted saved text failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
   }
 }
