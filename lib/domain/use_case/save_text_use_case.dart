@@ -9,5 +9,5 @@ class SaveTextUseCase {
   SaveTextUseCase(this._repository);
 
   Future<void> invoke(SavedText text) =>
-      _repository.saveText(text);
+      _repository.save(text);
 }

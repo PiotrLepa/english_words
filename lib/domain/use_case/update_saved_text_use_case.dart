@@ -3,11 +3,10 @@ import 'package:english_words/domain/repository/saved_texts_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetSavedTextsUseCase {
+class UpdateSavedTextUseCase {
   final SavedTextRepository _repository;
 
-  GetSavedTextsUseCase(this._repository);
+  UpdateSavedTextUseCase(this._repository);
 
-  Future<List<SavedText>> invoke() =>
-      _repository.get();
+  Future<void> invoke(SavedText text) => _repository.update(text);
 }

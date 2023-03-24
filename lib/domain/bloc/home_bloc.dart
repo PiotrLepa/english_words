@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
+import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_saved_texts_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetSavedTextsUseCase _getSavedTextsUseCase;
   final GetInfoAndSaveTextUseCase _getInfoAndSaveTextUseCase;
+  final DeleteSavedTextUseCase _deleteSavedTextUseCase;
 
   SavedText? _recentlyDeletedText;
   int? _recentlyDeletedTextIndex;
@@ -24,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(
     this._getSavedTextsUseCase,
     this._getInfoAndSaveTextUseCase,
+    this._deleteSavedTextUseCase,
   ) : super(const HomeState(
           status: HomeStatus.initialLoading,
           savedTexts: [],
@@ -103,9 +106,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _recentlyDeletedText = event.item;
     _recentlyDeletedTextIndex = state.savedTexts.indexOf(event.item);
 
-    emit(state.copyWith(
-      status: HomeStatus.savedTextDeleted,
-    ));
+    await _deleteSavedTextUseCase
+        .invoke(event.item.id!)
+        .catchError((error, stackTrace) {
+      log(
+        'deleting saved text failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }).whenComplete(() {
+      emit(state.copyWith(
+        status: HomeStatus.savedTextDeleted,
+      ));
+    });
   }
 
   Future<void> _onUndoSavedTextDeletion(
