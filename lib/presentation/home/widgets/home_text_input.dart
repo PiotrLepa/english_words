@@ -36,13 +36,39 @@ class _HomeTextInputState extends State<HomeTextInput> {
           ),
         ),
         const SizedBox(width: 16),
-        FloatingActionButton(
-          onPressed: () {
-            widget.onTextSubmitted(widget.textEditController.value.text);
-          },
-          child: const Icon(Icons.keyboard_arrow_right),
-        ),
+        _getButtonOrLoader(),
       ],
+    );
+  }
+
+  Widget _getButtonOrLoader() {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.ease,
+      child: widget.isTranslatingInProgress ? _getLoader() : _getFab(),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
+    );
+  }
+
+  Widget _getFab() {
+    return FloatingActionButton(
+      onPressed: () {
+        widget.onTextSubmitted(widget.textEditController.value.text);
+      },
+      child: const Icon(Icons.keyboard_arrow_right),
+    );
+  }
+
+  Widget _getLoader() {
+    return const Padding(
+      padding: EdgeInsets.all(10),
+      child: CircularProgressIndicator(),
     );
   }
 }

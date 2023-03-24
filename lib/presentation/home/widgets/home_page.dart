@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
-  final void Function(SavedText item) onTextDeleted;
   final void Function(SavedText item) onTranscriptionLongPressed;
+  final void Function(SavedText item) onTextDeleted;
   final List<SavedText> savedTexts;
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
