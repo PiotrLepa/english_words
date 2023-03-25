@@ -36,7 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._deleteSavedTextUseCase,
   ) : super(const HomeState(
           status: HomeStatus.initialLoading,
-          savedTexts: [],
+          textsToLearn: [],
         )) {
     on<ScreenStarted>(_onScreenStarted);
     on<TextSubmitted>(_onTextSubmitted);
@@ -50,10 +50,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ScreenStarted event,
     Emitter<HomeState> emit,
   ) async {
-    await _getTextsToLearnUseCase.invoke().then((savedTexts) {
+    await _getTextsToLearnUseCase.invoke().then((textsToLearn) {
       emit(state.copyWith(
         status: HomeStatus.initiallyLoaded,
-        savedTexts: savedTexts,
+        textsToLearn: textsToLearn,
       ));
     }).catchError((error, stackTrace) {
       emit(state.copyWith(
@@ -91,7 +91,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await _getInfoAndSaveTextUseCase.invoke(trimmedText).then((textInfo) {
       emit(state.copyWith(
         status: HomeStatus.translationSuccessful,
-        savedTexts: [textInfo, ...state.savedTexts],
+        textsToLearn: [textInfo, ...state.textsToLearn],
       ));
     }).catchError((error, stackTrace) {
       emit(state.copyWith(
@@ -106,25 +106,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   bool _isTextAlreadySaved(String text) =>
-      state.savedTexts.any((element) => element.originalText == text);
+      state.textsToLearn.any((element) => element.originalText == text);
 
   Future<void> _onTextAddedToLearned(
     TextAddedToLearned event,
     Emitter<HomeState> emit,
   ) async {
     _lastLearnedText = ModifiedText(
-      index: state.savedTexts.indexOf(event.item),
+      index: state.textsToLearn.indexOf(event.item),
       text: event.item,
     );
 
     emit(state.copyWith(
       status: HomeStatus.savedTextLearned,
-      savedTexts:
-          state.savedTexts.where((text) => text.id != event.item.id).toList(),
+      textsToLearn: state.textsToLearn.toList()..remove(event.item),
     ));
 
     final updatedText = event.item.copyWith(isLearned: true);
-    await _updateSavedTextUseCase
+    _updateSavedTextUseCase
         .invoke(updatedText)
         .catchError((error, stackTrace) {
       log(
@@ -144,14 +143,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     emit(state.copyWith(
       status: HomeStatus.undoAddingTextToLearned,
-      savedTexts: state.savedTexts.toList()
+      textsToLearn: state.textsToLearn.toList()
         ..insert(learnedText.index, learnedText.text),
     ));
 
     final updatedText = learnedText.text.copyWith(isLearned: false);
     _lastLearnedText = null;
 
-    await _updateSavedTextUseCase
+    _updateSavedTextUseCase
         .invoke(updatedText)
         .catchError((error, stackTrace) {
       log(
@@ -167,17 +166,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     _lastDeletedText = ModifiedText(
-      index: state.savedTexts.indexOf(event.item),
+      index: state.textsToLearn.indexOf(event.item),
       text: event.item,
     );
 
     emit(state.copyWith(
       status: HomeStatus.savedTextDeleted,
-      savedTexts:
-          state.savedTexts.where((text) => text.id != event.item.id).toList(),
+      textsToLearn: state.textsToLearn.toList()..remove(event.item),
     ));
 
-    await _deleteSavedTextUseCase
+    _deleteSavedTextUseCase
         .invoke(event.item.id!)
         .catchError((error, stackTrace) {
       log(
@@ -197,13 +195,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     emit(state.copyWith(
       status: HomeStatus.undoSavedTextDeletion,
-      savedTexts: state.savedTexts.toList()
+      textsToLearn: state.textsToLearn.toList()
         ..insert(deletedText.index, deletedText.text),
     ));
 
     _lastDeletedText = null;
 
-    await _saveTextUseCase
+    _saveTextUseCase
         .invoke(deletedText.text)
         .catchError((error, stackTrace) {
       log(

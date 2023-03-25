@@ -1,5 +1,5 @@
 import 'package:english_words/presentation/extensions.dart';
-import 'package:english_words/presentation/home/widgets/base_saved_text_list_item.dart';
+import 'package:english_words/presentation/common/widgets/base_saved_text_list_item.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 

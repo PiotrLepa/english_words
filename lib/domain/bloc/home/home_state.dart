@@ -18,6 +18,6 @@ enum HomeStatus {
 class HomeState with _$HomeState {
   const factory HomeState({
     required HomeStatus status,
-    required List<SavedText> savedTexts,
+    required List<SavedText> textsToLearn,
   }) = _HomeState;
 }

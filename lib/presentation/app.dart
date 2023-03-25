@@ -1,5 +1,5 @@
 import 'package:english_words/di/dependency_injection.dart';
-import 'package:english_words/domain/bloc/home_bloc.dart';
+import 'package:english_words/domain/bloc/home/home_bloc.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/router/app_router.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';

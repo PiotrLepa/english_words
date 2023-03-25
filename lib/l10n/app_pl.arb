@@ -1,5 +1,6 @@
 {
   "appName": "Angielskie Słówka",
+  "undo": "Cofnij",
   "homeInputHint":"Wpisz tekst do przetłuamczenia",
   "homeTranslateButton": "Przetłumacz",
   "homeSavedTextHeaderOriginalText": "Angielski",
@@ -8,7 +9,9 @@
   "homeTextAlreadySavedError": "Tekst jest już zapisany",
   "homeSavedTextLearned": "Tekst dodany do nauczonych",
   "homeSavedTextDeleted": "Tekst został usunięty",
-  "homeUndoTextDeletion": "Cofnij",
   "homeAddYourFirstTranslation": "Dodaj swoje pierwsze tłumacznie",
-  "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia"
+  "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia",
+  "learnedTextsAppBarTitle": "Nauczone słówka",
+  "learnedTextsNoEntries": "Brak nauczyonych słówek",
+  "learnedTextsTextMovedToLearn": "Tekst przeniesiony do nauki"
 }

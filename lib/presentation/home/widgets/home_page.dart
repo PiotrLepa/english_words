@@ -1,9 +1,7 @@
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
-import 'package:english_words/presentation/extensions.dart';
+import 'package:english_words/presentation/common/widgets/saved_texts_list_with_header.dart';
+import 'package:english_words/presentation/home/widgets/home_page_list_placeholder.dart';
 import 'package:english_words/presentation/home/widgets/home_text_input.dart';
-import 'package:english_words/presentation/home/widgets/saved_text_item.dart';
-import 'package:english_words/presentation/home/widgets/saved_text_list_header.dart';
-import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +9,7 @@ class HomePage extends StatelessWidget {
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onTextAddedToLearned;
   final void Function(SavedText item) onTextDeleted;
-  final List<SavedText> savedTexts;
+  final List<SavedText> textsToLearn;
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
 
@@ -21,7 +19,7 @@ class HomePage extends StatelessWidget {
     required this.onTranscriptionLongPressed,
     required this.onTextAddedToLearned,
     required this.onTextDeleted,
-    required this.savedTexts,
+    required this.textsToLearn,
     required this.isTranslatingInProgress,
     required this.textEditController,
   }) : super(key: key);
@@ -40,60 +38,18 @@ class HomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        savedTexts.isEmpty
-            ? _buildPlaceholder(context)
-            : _buildList(savedTexts),
+        textsToLearn.isEmpty ? const HomePageListPlaceholder() : _buildList(),
       ],
     );
   }
 
-  Widget _buildPlaceholder(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 32),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            context.strings.homeAddYourFirstTranslation,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Icon(
-            Icons.arrow_upward,
-            size: 32,
-            color: ThemeProvider.of(context).primaryColor,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildList(List<SavedText> savedTexts) {
+  Widget _buildList() {
     return Expanded(
-      child: Column(
-        children: [
-          const SavedTextListHeader(),
-          Expanded(
-            child: ListView.separated(
-              itemCount: savedTexts.length,
-              separatorBuilder: (context, index) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final item = savedTexts[index];
-                return SavedTextItem(
-                  item: item,
-                  backgroundColor:
-                      ThemeProvider.of(context).getListItemColor(index),
-                  onTranscriptionLongPressed: onTranscriptionLongPressed,
-                  onTextAddedToLearned: onTextAddedToLearned,
-                  onTextDeleted: onTextDeleted,
-                );
-              },
-            ),
-          ),
-        ],
+      child: SavedTextsListWithHeader(
+        texts: textsToLearn,
+        onTranscriptionLongPressed: onTranscriptionLongPressed,
+        onTextAddedToLearned: onTextAddedToLearned,
+        onTextDeleted: onTextDeleted,
       ),
     );
   }

@@ -1,8 +1,9 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:english_words/di/dependency_injection.dart';
-import 'package:english_words/domain/bloc/home_bloc.dart';
+import 'package:english_words/domain/bloc/home/home_bloc.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_page.dart';
+import 'package:english_words/presentation/router/app_router.gr.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.appName),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.router.push(const LearnedTextsRoute());
+            },
+            icon: const Icon(Icons.save),
+          )
+        ],
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (_, newState) {
@@ -68,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
             default:
               return HomePage(
-                savedTexts: state.savedTexts,
+                textsToLearn: state.textsToLearn,
                 isTranslatingInProgress:
                     state.status == HomeStatus.translationInProgress,
                 textEditController: _textEditController,
@@ -121,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SnackBar(
         content: Text(context.strings.homeSavedTextLearned),
         action: SnackBarAction(
-          label: context.strings.homeUndoTextDeletion,
+          label: context.strings.undo,
           onPressed: () {
             context
                 .read<HomeBloc>()
@@ -137,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SnackBar(
         content: Text(context.strings.homeSavedTextDeleted),
         action: SnackBarAction(
-          label: context.strings.homeUndoTextDeletion,
+          label: context.strings.undo,
           onPressed: () {
             context
                 .read<HomeBloc>()

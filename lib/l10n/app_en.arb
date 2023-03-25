@@ -1,5 +1,6 @@
 {
   "appName": "English Words",
+  "undo": "Undo",
   "homeInputHint":"Enter a text to be translated",
   "homeTranslateButton": "Translate",
   "homeSavedTextHeaderOriginalText": "English",
@@ -8,7 +9,9 @@
   "homeTextAlreadySavedError": "Text already saved",
   "homeSavedTextLearned": "Text learned",
   "homeSavedTextDeleted": "Text deleted",
-  "homeUndoTextDeletion": "Undo",
   "homeAddYourFirstTranslation": "Add your first translation",
-  "translationFailureMessage": "An error occurred during the translation"
+  "translationFailureMessage": "An error occurred during the translation",
+  "learnedTextsAppBarTitle": "Learned texts",
+  "learnedTextsNoEntries": "No learned texts",
+  "learnedTextsTextMovedToLearn": "Text moved to learn"
 }

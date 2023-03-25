@@ -5,6 +5,8 @@ abstract class SavedTextRepository {
 
   Future<List<SavedText>> getTextsToLearn();
 
+  Future<List<SavedText>> getLearnedTexts();
+
   Future<void> update(SavedText text);
 
   Future<void> delete(String id);
