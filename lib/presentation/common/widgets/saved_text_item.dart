@@ -8,16 +8,16 @@ class SavedTextItem extends StatelessWidget {
   final SavedText item;
   final Color backgroundColor;
   final void Function(SavedText item) onTranscriptionLongPressed;
-  final void Function(SavedText item) onTextAddedToLearned;
-  final void Function(SavedText item) onTextDeleted;
+  final void Function(SavedText item) onItemSwipedRight;
+  final void Function(SavedText item) onItemSwipedLeft;
 
   const SavedTextItem({
     Key? key,
     required this.item,
     required this.backgroundColor,
     required this.onTranscriptionLongPressed,
-    required this.onTextAddedToLearned,
-    required this.onTextDeleted,
+    required this.onItemSwipedRight,
+    required this.onItemSwipedLeft,
   }) : super(key: key);
 
   @override
@@ -33,9 +33,9 @@ class SavedTextItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
         if (direction == DismissDirection.startToEnd) {
-          onTextAddedToLearned(item);
+          onItemSwipedRight(item);
         } else if (direction == DismissDirection.endToStart) {
-          onTextDeleted(item);
+          onItemSwipedLeft(item);
         }
       },
       child: BaseSavedTextListItem(

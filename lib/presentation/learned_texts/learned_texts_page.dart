@@ -1,9 +1,7 @@
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/learned_texts/learned_texts_bloc.dart';
-import 'package:english_words/domain/model/saved_text/saved_text.dart';
-import 'package:english_words/presentation/common/widgets/saved_texts_list_with_header.dart';
 import 'package:english_words/presentation/extensions.dart';
-import 'package:english_words/presentation/learned_texts/widgets/learned_words_list_placeholder.dart';
+import 'package:english_words/presentation/learned_texts/widgets/learned_texts_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -52,37 +50,24 @@ class _LearnedTextsPageState extends State<LearnedTextsPage> {
           case LearnedTextsStatus.initialLoading:
             return const Center(child: CircularProgressIndicator());
           default:
-            return Column(
-              children: [
-                const SizedBox(height: 16),
-                state.learnedTexts.isEmpty
-                    ? const LearnedWordsListPlaceholder()
-                    : _buildList(state.learnedTexts),
-              ],
+            return LearnedTextsContent(
+              onTranscriptionLongPressed: (item) {
+                _textToSpeech.speak(item.originalText);
+              },
+              onTextMovedToLearn: (item) {
+                context
+                    .read<LearnedTextsBloc>()
+                    .add(LearnedTextsEvent.textMovedToLearn(item));
+              },
+              onTextDeleted: (item) {
+                context
+                    .read<LearnedTextsBloc>()
+                    .add(LearnedTextsEvent.textDeleted(item));
+              },
+              learnedTexts: state.learnedTexts,
             );
         }
       },
-    );
-  }
-
-  Widget _buildList(List<SavedText> texts) {
-    return Expanded(
-      child: SavedTextsListWithHeader(
-        texts: texts,
-        onTranscriptionLongPressed: (item) {
-          _textToSpeech.speak(item.originalText);
-        },
-        onTextAddedToLearned: (item) {
-          context
-              .read<LearnedTextsBloc>()
-              .add(LearnedTextsEvent.textMovedToLearn(item));
-        },
-        onTextDeleted: (item) {
-          context
-              .read<LearnedTextsBloc>()
-              .add(LearnedTextsEvent.textDeleted(item));
-        },
-      ),
     );
   }
 

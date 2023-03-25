@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 class SavedTextsListWithHeader extends StatelessWidget {
   final List<SavedText> texts;
   final void Function(SavedText item) onTranscriptionLongPressed;
-  final void Function(SavedText item) onTextAddedToLearned;
-  final void Function(SavedText item) onTextDeleted;
+  final void Function(SavedText item) onItemSwipedRight;
+  final void Function(SavedText item) onItemSwipedLeft;
 
   const SavedTextsListWithHeader({
     super.key,
     required this.texts,
     required this.onTranscriptionLongPressed,
-    required this.onTextAddedToLearned,
-    required this.onTextDeleted,
+    required this.onItemSwipedRight,
+    required this.onItemSwipedLeft,
   });
 
   @override
@@ -34,8 +34,8 @@ class SavedTextsListWithHeader extends StatelessWidget {
                 backgroundColor:
                     ThemeProvider.of(context).getListItemColor(index),
                 onTranscriptionLongPressed: onTranscriptionLongPressed,
-                onTextAddedToLearned: onTextAddedToLearned,
-                onTextDeleted: onTextDeleted,
+                onItemSwipedRight: onItemSwipedRight,
+                onItemSwipedLeft: onItemSwipedLeft,
               );
             },
           ),

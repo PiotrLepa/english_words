@@ -4,7 +4,7 @@ import 'package:english_words/presentation/home/widgets/home_page_list_placehold
 import 'package:english_words/presentation/home/widgets/home_text_input.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomeContent extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onTextAddedToLearned;
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   final bool isTranslatingInProgress;
   final TextEditingController textEditController;
 
-  const HomePage({
+  const HomeContent({
     Key? key,
     required this.onTextSubmitted,
     required this.onTranscriptionLongPressed,
@@ -48,8 +48,8 @@ class HomePage extends StatelessWidget {
       child: SavedTextsListWithHeader(
         texts: textsToLearn,
         onTranscriptionLongPressed: onTranscriptionLongPressed,
-        onTextAddedToLearned: onTextAddedToLearned,
-        onTextDeleted: onTextDeleted,
+        onItemSwipedRight: onTextAddedToLearned,
+        onItemSwipedLeft: onTextDeleted,
       ),
     );
   }

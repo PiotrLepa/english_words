@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/learned_texts/learned_texts_bloc.dart';
 import 'package:english_words/presentation/extensions.dart';
-import 'package:english_words/presentation/learned_texts/widgets/learned_texts_page.dart';
+import 'package:english_words/presentation/learned_texts/learned_texts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
