@@ -28,7 +28,6 @@ class _HomeTextInputState extends State<HomeTextInput> {
             onSubmitted: (text) {
               widget.onTextSubmitted(text);
             },
-            maxLines: null,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: context.strings.homeInputHint,
