@@ -1,16 +1,14 @@
-import 'package:english_words/data/model/translation/translation_response.dart';
-import 'package:english_words/domain/model/translation/translation.dart';
+import 'package:english_words/data/model/translation/general/translations_response.dart';
+import 'package:english_words/domain/model/translations/translations.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class TranslationConverter {
-  Translation toDomain(TranslationResponse response) => Translation(
-        detectedSourceLanguage: response.detectedSourceLanguage,
-        text: response.text,
+  Translations toDomain(TranslationsResponse response) => Translations(
+        translations: response.translations,
       );
 
-  TranslationResponse toData(Translation response) => TranslationResponse(
-        detectedSourceLanguage: response.detectedSourceLanguage,
-        text: response.text,
+  TranslationsResponse toData(Translations response) => TranslationsResponse(
+        translations: response.translations,
       );
 }

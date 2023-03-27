@@ -18,10 +18,11 @@ class SavedTextConverter {
   SavedText toDomain(SavedTextResponse response) => SavedText(
         id: response.id,
         originalText: response.originalText,
-        translations:
-            response.translations.map(_translationConverter.toDomain).toList(),
+        translations: _translationConverter.toDomain(response.translations),
         ipaTranscription:
             _ipaTranscriptionConverter.toDomain(response.ipaTranscription),
+        sourceLanguage: response.sourceLanguage,
+        targetLanguage: response.targetLanguage,
         isLearned: response.isLearned,
         creationDate: response.creationDate.toDate(),
       );
@@ -29,10 +30,11 @@ class SavedTextConverter {
   SavedTextResponse toData(SavedText body) => SavedTextResponse(
         id: body.id,
         originalText: body.originalText,
-        translations:
-            body.translations.map(_translationConverter.toData).toList(),
+        translations: _translationConverter.toData(body.translations),
         ipaTranscription:
             _ipaTranscriptionConverter.toData(body.ipaTranscription),
+        sourceLanguage: body.sourceLanguage,
+        targetLanguage: body.targetLanguage,
         isLearned: body.isLearned,
         creationDate: Timestamp.fromDate(body.creationDate),
       );

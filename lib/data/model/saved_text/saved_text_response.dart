@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/data/json/firebase_timestamp_json_converter.dart';
 import 'package:english_words/data/model/ipa_transcription/ipa_transcription_response.dart';
-import 'package:english_words/data/model/translation/translation_response.dart';
+import 'package:english_words/data/model/translation/general/translations_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'saved_text_response.freezed.dart';
@@ -14,8 +14,10 @@ class SavedTextResponse with _$SavedTextResponse {
   const factory SavedTextResponse({
     @JsonKey(includeToJson: false) String? id,
     required String originalText,
-    required List<TranslationResponse> translations,
+    required TranslationsResponse translations,
     required IpaTranscriptionResponse ipaTranscription,
+    required String sourceLanguage,
+    required String targetLanguage,
     required bool isLearned,
     @FirebaseTimestampJsonConverter() required Timestamp creationDate,
   }) = _SavedTextResponse;

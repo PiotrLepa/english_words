@@ -1,5 +1,5 @@
-import 'package:english_words/domain/model/translation/translation.dart';
+import 'package:english_words/domain/model/translations/translations.dart';
 
 abstract class TranslationRepository {
-  Future<List<Translation>> getTranslations(String text);
+  Future<Translations> getTranslations(String text);
 }

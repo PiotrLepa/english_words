@@ -86,8 +86,7 @@ class SavedTextItem extends StatelessWidget {
   }
 
   Widget _buildTranslation() {
-    final translationsText =
-        item.translations.map((translation) => translation.text).join(', ');
+    final translationsText = item.translations.translations.join(', ');
     return Text(translationsText);
   }
 }
