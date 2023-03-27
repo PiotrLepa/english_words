@@ -5,5 +5,5 @@ import 'package:injectable/injectable.dart';
 abstract class TextToSpeechModule {
   static const _speakLanguage = 'en-US';
 
-  FlutterTts get firestore => FlutterTts()..setLanguage(_speakLanguage);
+  FlutterTts get flutterTts => FlutterTts()..setLanguage(_speakLanguage);
 }

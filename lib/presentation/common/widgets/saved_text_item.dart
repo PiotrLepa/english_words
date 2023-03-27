@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class SavedTextItem extends StatelessWidget {
   final SavedText item;
   final Color backgroundColor;
+  final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onItemSwipedRight;
   final void Function(SavedText item) onItemSwipedLeft;
@@ -15,6 +16,7 @@ class SavedTextItem extends StatelessWidget {
     Key? key,
     required this.item,
     required this.backgroundColor,
+    required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
     required this.onItemSwipedRight,
     required this.onItemSwipedLeft,
@@ -68,6 +70,9 @@ class SavedTextItem extends StatelessWidget {
         .toList();
 
     return GestureDetector(
+      onTap: () {
+        onTranscriptionPressed(item);
+      },
       onLongPress: () {
         onTranscriptionLongPressed(item);
       },

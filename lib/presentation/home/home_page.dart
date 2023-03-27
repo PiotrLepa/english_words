@@ -1,5 +1,6 @@
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/home/home_bloc.dart';
+import 'package:english_words/presentation/common/text_to_speech_constants.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_content.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
@@ -69,8 +70,15 @@ class _HomePageState extends State<HomePage> {
               onTextSubmitted: (text) {
                 context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
               },
+              onTranscriptionPressed: (item) {
+                _textToSpeech
+                  ..setSpeechRate(TextToSpeechConstants.normalSpeedRate)
+                ..speak(item.originalText);
+              },
               onTranscriptionLongPressed: (item) {
-                _textToSpeech.speak(item.originalText);
+                _textToSpeech
+                  ..setSpeechRate(TextToSpeechConstants.slowSpeedRate)
+                  ..speak(item.originalText);
               },
               onTextAddedToLearned: (item) {
                 context

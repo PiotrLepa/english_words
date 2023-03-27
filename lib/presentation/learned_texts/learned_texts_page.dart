@@ -1,5 +1,6 @@
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/learned_texts/learned_texts_bloc.dart';
+import 'package:english_words/presentation/common/text_to_speech_constants.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/learned_texts/widgets/learned_texts_content.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +52,15 @@ class _LearnedTextsPageState extends State<LearnedTextsPage> {
             return const Center(child: CircularProgressIndicator());
           default:
             return LearnedTextsContent(
+              onTranscriptionPressed: (item) {
+                _textToSpeech
+                  ..setSpeechRate(TextToSpeechConstants.normalSpeedRate)
+                  ..speak(item.originalText);
+              },
               onTranscriptionLongPressed: (item) {
-                _textToSpeech.speak(item.originalText);
+                _textToSpeech
+                  ..setSpeechRate(TextToSpeechConstants.slowSpeedRate)
+                  ..speak(item.originalText);
               },
               onTextMovedToLearn: (item) {
                 context

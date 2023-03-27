@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class HomeContent extends StatelessWidget {
   final void Function(String text) onTextSubmitted;
+  final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onTextAddedToLearned;
   final void Function(SavedText item) onTextDeleted;
@@ -16,6 +17,7 @@ class HomeContent extends StatelessWidget {
   const HomeContent({
     Key? key,
     required this.onTextSubmitted,
+    required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
     required this.onTextAddedToLearned,
     required this.onTextDeleted,
@@ -47,6 +49,7 @@ class HomeContent extends StatelessWidget {
     return Expanded(
       child: SavedTextsListWithHeader(
         texts: textsToLearn,
+        onTranscriptionPressed:onTranscriptionPressed,
         onTranscriptionLongPressed: onTranscriptionLongPressed,
         onItemSwipedRight: onTextAddedToLearned,
         onItemSwipedLeft: onTextDeleted,
