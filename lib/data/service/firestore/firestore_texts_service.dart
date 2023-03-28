@@ -12,8 +12,10 @@ class FirestoreTextsService {
 
   FirestoreTextsService(this._firestore);
 
-  Future<void> save(SavedTextResponse text) =>
-      _firestore.collection(_collection).add(text.toJson());
+  Future<SavedTextResponse> save(SavedTextResponse text) => _firestore
+      .collection(_collection)
+      .add(text.toJson())
+      .then((document) => text.copyWith(id: document.id));
 
   Future<List<SavedTextResponse>> getTextsToLearn() =>
       _getTexts(isLearned: false);
@@ -30,10 +32,11 @@ class FirestoreTextsService {
           .orderBy(_creationDateField, descending: true)
           .get()
           .then((snapshot) =>
-          snapshot.docs.map((doc) => _parseSavedText(doc)).toList());
+              snapshot.docs.map((doc) => _parseSavedText(doc)).toList());
 
   SavedTextResponse _parseSavedText(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc,) {
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     return SavedTextResponse.fromJsonFirestore(
       id: doc.id,
       json: doc.data(),

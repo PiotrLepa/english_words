@@ -8,6 +8,6 @@ class SaveTextUseCase {
 
   SaveTextUseCase(this._repository);
 
-  Future<void> invoke(SavedText text) =>
+  Future<SavedText> invoke(SavedText text) =>
       _repository.save(text);
 }

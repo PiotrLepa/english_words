@@ -34,6 +34,5 @@ class GetInfoAndSaveTextUseCase {
           isLearned: false,
           creationDate: DateTime.now(),
         );
-      }).then((text) =>
-          _saveTextUseCase.invoke(text).then((value) => Future.value(text)));
+      }).then(_saveTextUseCase.invoke);
 }

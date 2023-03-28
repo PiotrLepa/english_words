@@ -78,9 +78,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     ));
 
     final updatedText = event.item.copyWith(isLearned: false);
-    _updateSavedTextUseCase
-        .invoke(updatedText)
-        .catchError((error, stackTrace) {
+    _updateSavedTextUseCase.invoke(updatedText).catchError((error, stackTrace) {
       log(
         'updating saved text failed',
         error: error,
@@ -105,9 +103,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     final updatedText = textMovedToLearn.text.copyWith(isLearned: true);
     _lastTextMovedToLearn = null;
 
-    _updateSavedTextUseCase
-        .invoke(updatedText)
-        .catchError((error, stackTrace) {
+    _updateSavedTextUseCase.invoke(updatedText).catchError((error, stackTrace) {
       log(
         'undo adding text to learned failed',
         error: error,
@@ -156,9 +152,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
 
     _lastDeletedText = null;
 
-    _saveTextUseCase
-        .invoke(deletedText.text)
-        .catchError((error, stackTrace) {
+    _saveTextUseCase.invoke(deletedText.text).catchError((error, stackTrace) {
       log(
         'restoring deleted saved text failed',
         error: error,
