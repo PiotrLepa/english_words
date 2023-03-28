@@ -27,9 +27,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     _textEditController.dispose();
-    await _textToSpeech.stop();
+    _textToSpeech.stop();
     super.dispose();
   }
 

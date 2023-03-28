@@ -26,8 +26,8 @@ class _LearnedTextsPageState extends State<LearnedTextsPage> {
   }
 
   @override
-  Future<void> dispose() async {
-    await _textToSpeech.stop();
+  void dispose() {
+    _textToSpeech.stop();
     super.dispose();
   }
 
