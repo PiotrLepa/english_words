@@ -6,7 +6,9 @@ import 'package:english_words/data/model/translation/deepl/deepl_translations_re
 import 'package:english_words/data/model/translation/general/translations_response.dart';
 import 'package:english_words/data/service/translation/translation_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
+@injectable
 class DeeplTranslationService implements TranslationService {
   static const _authority = 'api-free.deepl.com';
   static const _path = '/v2/translate';

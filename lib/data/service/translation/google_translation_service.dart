@@ -8,8 +8,8 @@ import 'package:english_words/data/service/translation/translation_service.dart'
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: TranslationService)
-class DeeplTranslationService implements TranslationService {
+@injectable
+class GoogleTranslationService implements TranslationService {
   static const _authority = 'translation.googleapis.com';
   static const _path = '/language/translate/v2';
   static const _apiKeyName = 'key';
@@ -25,7 +25,7 @@ class DeeplTranslationService implements TranslationService {
 
   final GoogleTranslationConverter _responseConverter;
 
-  DeeplTranslationService(this._responseConverter);
+  GoogleTranslationService(this._responseConverter);
 
   @override
   Future<TranslationsResponse> translate(String text) async {
