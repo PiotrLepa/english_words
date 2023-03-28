@@ -29,8 +29,8 @@ class SavedTextRepositoryImpl extends SavedTextRepository {
       _service.save(_converter.toData(text)).then(_converter.toDomain);
 
   @override
-  Future<void> update(SavedText text) =>
-      _service.update(_converter.toData(text));
+  Future<SavedText> update(SavedText text) =>
+      _service.update(_converter.toData(text)).then(_converter.toDomain);
 
   @override
   Future<void> delete(String id) => _service.delete(id);

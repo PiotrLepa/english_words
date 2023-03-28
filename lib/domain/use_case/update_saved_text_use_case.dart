@@ -8,5 +8,5 @@ class UpdateSavedTextUseCase {
 
   UpdateSavedTextUseCase(this._repository);
 
-  Future<void> invoke(SavedText text) => _repository.update(text);
+  Future<SavedText> invoke(SavedText text) => _repository.update(text);
 }

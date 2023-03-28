@@ -1,6 +1,7 @@
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/home/home_bloc.dart';
 import 'package:english_words/presentation/common/text_to_speech_constants.dart';
+import 'package:english_words/presentation/common/widgets/edit_translation_dialog.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_content.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
@@ -70,10 +71,21 @@ class _HomePageState extends State<HomePage> {
               onTextSubmitted: (text) {
                 context.read<HomeBloc>().add(HomeEvent.textSubmitted(text));
               },
+              onTranslationLongPressed: (item) async {
+                final editedTranslation = await showEditTranslationDialog(
+                  context,
+                  item.translations.getAsText(),
+                );
+
+                if (context.mounted) {
+                  context.read<HomeBloc>().add(
+                      HomeEvent.translationEdited(item, editedTranslation));
+                }
+              },
               onTranscriptionPressed: (item) {
                 _textToSpeech
                   ..setSpeechRate(TextToSpeechConstants.normalSpeedRate)
-                ..speak(item.originalText);
+                  ..speak(item.originalText);
               },
               onTranscriptionLongPressed: (item) {
                 _textToSpeech

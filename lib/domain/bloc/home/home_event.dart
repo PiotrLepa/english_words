@@ -14,4 +14,9 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.savedTextDeleted(SavedText item) = SavedTextDeleted;
 
   const factory HomeEvent.undoDeletingSavedText() = UndoDeletingSavedText;
+
+  const factory HomeEvent.translationEdited(
+    SavedText item,
+    String? newTranslation,
+  ) = TranslationEdited;
 }

@@ -1,6 +1,8 @@
 {
   "appName": "Angielskie Słówka",
   "undo": "Cofnij",
+  "edit": "Edytuj",
+  "editTranslation": "Edytuj tłumaczenie",
   "homeInputHint":"Wpisz tekst do przetłuamczenia",
   "homeTranslateButton": "Przetłumacz",
   "homeSavedTextHeaderOriginalText": "Angielski",

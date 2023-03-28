@@ -43,8 +43,11 @@ class FirestoreTextsService {
     );
   }
 
-  Future<void> update(SavedTextResponse text) =>
-      _firestore.collection(_collection).doc(text.id).update(text.toJson());
+  Future<SavedTextResponse> update(SavedTextResponse text) => _firestore
+      .collection(_collection)
+      .doc(text.id)
+      .update(text.toJson())
+      .then((_) => text);
 
   Future<void> delete(String id) =>
       _firestore.collection(_collection).doc(id).delete();

@@ -1,6 +1,8 @@
 {
   "appName": "English Words",
   "undo": "Undo",
+  "edit": "Edit",
+  "editTranslation": "Edit the translation",
   "homeInputHint":"Enter a text to be translated",
   "homeTranslateButton": "Translate",
   "homeSavedTextHeaderOriginalText": "English",

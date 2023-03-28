@@ -4,6 +4,7 @@ import 'package:english_words/presentation/learned_texts/widgets/learned_words_l
 import 'package:flutter/material.dart';
 
 class LearnedTextsContent extends StatelessWidget {
+  final void Function(SavedText item) onTranslationLongPressed;
   final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onTextMovedToLearn;
@@ -12,6 +13,7 @@ class LearnedTextsContent extends StatelessWidget {
 
   const LearnedTextsContent({
     Key? key,
+    required this.onTranslationLongPressed,
     required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
     required this.onTextMovedToLearn,
@@ -35,7 +37,8 @@ class LearnedTextsContent extends StatelessWidget {
     return Expanded(
       child: SavedTextsListWithHeader(
         texts: texts,
-        onTranscriptionPressed:onTranscriptionPressed,
+        onTranslationLongPressed: onTranslationLongPressed,
+        onTranscriptionPressed: onTranscriptionPressed,
         onTranscriptionLongPressed: onTranscriptionLongPressed,
         onItemSwipedRight: onTextMovedToLearn,
         onItemSwipedLeft: onTextDeleted,

@@ -12,6 +12,7 @@ enum HomeStatus {
   undoAddingTextToLearned,
   savedTextDeleted,
   undoSavedTextDeletion,
+  translationUpdated,
 }
 
 @freezed

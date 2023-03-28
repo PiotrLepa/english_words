@@ -7,6 +7,7 @@ import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.da
 import 'package:english_words/domain/use_case/get_texts_to_learn_use_case.dart';
 import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_saved_text_use_case.dart';
+import 'package:english_words/domain/use_case/update_translation_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -24,6 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final SaveTextUseCase _saveTextUseCase;
   final UpdateSavedTextUseCase _updateSavedTextUseCase;
   final DeleteSavedTextUseCase _deleteSavedTextUseCase;
+  final UpdateTranslationUseCase _updateTranslationUseCase;
 
   ModifiedText? _lastDeletedText;
   ModifiedText? _lastLearnedText;
@@ -34,6 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._saveTextUseCase,
     this._updateSavedTextUseCase,
     this._deleteSavedTextUseCase,
+    this._updateTranslationUseCase,
   ) : super(const HomeState(
           status: HomeStatus.initialLoading,
           textsToLearn: [],
@@ -44,6 +47,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UndoAddingTextToLearned>(_onUndoAddingTextToLearned);
     on<SavedTextDeleted>(_onSavedTextDeleted);
     on<UndoDeletingSavedText>(_onUndoDeletingSavedText);
+    on<TranslationEdited>(_onTranslationEdited);
   }
 
   Future<void> _onScreenStarted(
@@ -123,9 +127,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     final updatedText = event.item.copyWith(isLearned: true);
-    _updateSavedTextUseCase
-        .invoke(updatedText)
-        .catchError((error, stackTrace) {
+    _updateSavedTextUseCase.invoke(updatedText).catchError((error, stackTrace) {
       log(
         'updating saved text failed',
         error: error,
@@ -150,9 +152,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final updatedText = learnedText.text.copyWith(isLearned: false);
     _lastLearnedText = null;
 
-    _updateSavedTextUseCase
-        .invoke(updatedText)
-        .catchError((error, stackTrace) {
+    _updateSavedTextUseCase.invoke(updatedText).catchError((error, stackTrace) {
       log(
         'undo adding text to learned failed',
         error: error,
@@ -201,11 +201,39 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     _lastDeletedText = null;
 
-    _saveTextUseCase
-        .invoke(deletedText.text)
-        .catchError((error, stackTrace) {
+    _saveTextUseCase.invoke(deletedText.text).catchError((error, stackTrace) {
       log(
         'restoring deleted saved text failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
+  }
+
+  Future<void> _onTranslationEdited(
+    TranslationEdited event,
+    Emitter<HomeState> emit,
+  ) async {
+    if (event.newTranslation == null) return;
+
+    final updatedItem = _updateTranslationUseCase.invoke(
+      event.item,
+      event.newTranslation!,
+    );
+
+    final indexToUpdate = state.textsToLearn.indexOf(event.item);
+    emit(state.copyWith(
+      status: HomeStatus.translationUpdated,
+      textsToLearn: state.textsToLearn.toList()
+        ..remove(event.item)
+        ..insert(indexToUpdate, updatedItem),
+    ));
+
+    await _updateSavedTextUseCase
+        .invoke(updatedItem)
+        .catchError((error, stackTrace) {
+      log(
+        'failed to update translation',
         error: error,
         stackTrace: stackTrace,
       );

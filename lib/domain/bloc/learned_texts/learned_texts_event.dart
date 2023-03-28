@@ -13,4 +13,9 @@ class LearnedTextsEvent with _$LearnedTextsEvent {
   const factory LearnedTextsEvent.textDeleted(SavedText item) = TextDeleted;
 
   const factory LearnedTextsEvent.undoDeletingText() = UndoDeletingText;
+
+  const factory LearnedTextsEvent.translationEdited(
+    SavedText item,
+    String? newTranslation,
+  ) = TranslationEdited;
 }

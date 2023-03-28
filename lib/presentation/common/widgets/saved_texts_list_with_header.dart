@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class SavedTextsListWithHeader extends StatelessWidget {
   final List<SavedText> texts;
+  final void Function(SavedText item) onTranslationLongPressed;
   final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onItemSwipedRight;
@@ -14,6 +15,7 @@ class SavedTextsListWithHeader extends StatelessWidget {
   const SavedTextsListWithHeader({
     super.key,
     required this.texts,
+    required this.onTranslationLongPressed,
     required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
     required this.onItemSwipedRight,
@@ -35,6 +37,7 @@ class SavedTextsListWithHeader extends StatelessWidget {
                 item: item,
                 backgroundColor:
                     ThemeProvider.of(context).getListItemColor(index),
+                onTranslationLongPressed:onTranslationLongPressed,
                 onTranscriptionPressed:onTranscriptionPressed,
                 onTranscriptionLongPressed: onTranscriptionLongPressed,
                 onItemSwipedRight: onItemSwipedRight,

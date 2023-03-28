@@ -6,6 +6,7 @@ import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_learned_texts_use_case.dart';
 import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_saved_text_use_case.dart';
+import 'package:english_words/domain/use_case/update_translation_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -22,6 +23,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
   final SaveTextUseCase _saveTextUseCase;
   final UpdateSavedTextUseCase _updateSavedTextUseCase;
   final DeleteSavedTextUseCase _deleteSavedTextUseCase;
+  final UpdateTranslationUseCase _updateTranslationUseCase;
 
   ModifiedText? _lastDeletedText;
   ModifiedText? _lastTextMovedToLearn;
@@ -31,6 +33,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     this._saveTextUseCase,
     this._updateSavedTextUseCase,
     this._deleteSavedTextUseCase,
+    this._updateTranslationUseCase,
   ) : super(const LearnedTextsState(
           status: LearnedTextsStatus.initialLoading,
           learnedTexts: [],
@@ -40,6 +43,7 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     on<UndoMovingTextToLearn>(_onUndoMovingTextToLearn);
     on<TextDeleted>(_onTextDeleted);
     on<UndoDeletingText>(_onUndoDeletingText);
+    on<TranslationEdited>(_onTranslationEdited);
   }
 
   Future<void> _onScreenStarted(
@@ -155,6 +159,34 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     _saveTextUseCase.invoke(deletedText.text).catchError((error, stackTrace) {
       log(
         'restoring deleted saved text failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
+  }
+
+  Future<void> _onTranslationEdited(
+    TranslationEdited event,
+    Emitter<LearnedTextsState> emit,
+  ) async {
+    if (event.newTranslation == null) return;
+
+    final updatedItem = _updateTranslationUseCase.invoke(
+      event.item,
+      event.newTranslation!,
+    );
+
+    final indexToUpdate = state.learnedTexts.indexOf(event.item);
+    emit(state.copyWith(
+      status: LearnedTextsStatus.translationUpdated,
+      learnedTexts: state.learnedTexts.toList()
+        ..remove(event.item)
+        ..insert(indexToUpdate, updatedItem),
+    ));
+
+    await _updateSavedTextUseCase.invoke(updatedItem).catchError((error, stackTrace) {
+      log(
+        'failed to update translation',
         error: error,
         stackTrace: stackTrace,
       );

@@ -8,6 +8,7 @@ enum LearnedTextsStatus {
   undoMovingTextToLearn,
   textDeleted,
   undoTextDeletion,
+  translationUpdated,
 }
 
 @freezed
