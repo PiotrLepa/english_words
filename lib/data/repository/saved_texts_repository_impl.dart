@@ -15,6 +15,14 @@ class SavedTextRepositoryImpl extends SavedTextRepository {
   );
 
   @override
+  Future<SavedText?> getByOriginalText(String originalText) =>
+      _service.getByOriginalText(originalText).then((response) {
+        if (response != null) {
+          return _converter.toDomain(response);
+        }
+      });
+
+  @override
   Future<List<SavedText>> getTextsToLearn() => _service
       .getTextsToLearn()
       .then((list) => list.map(_converter.toDomain).toList());

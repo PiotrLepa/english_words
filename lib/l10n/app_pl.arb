@@ -9,6 +9,7 @@
   "homeSavedTextHeaderTranslation": "Polski",
   "homeSavedTextHeaderTranscription": "Transkrypcja",
   "homeTextAlreadySavedError": "Tekst jest już zapisany",
+  "homeTextAlreadyLearnedError": "Tekst jest już dodany do nauczonych",
   "homeSavedTextLearned": "Tekst dodany do nauczonych",
   "homeSavedTextDeleted": "Tekst został usunięty",
   "homeAddYourFirstTranslation": "Dodaj swoje pierwsze tłumacznie",

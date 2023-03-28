@@ -48,6 +48,9 @@ class _HomePageState extends State<HomePage> {
           case HomeStatus.textAlreadySaved:
             _showTextAlreadySavedErrorSnackBar(context);
             break;
+          case HomeStatus.textAlreadyLearned:
+            _showTextAlreadyLearnedSnackBar(context);
+            break;
           case HomeStatus.savedTextLearned:
             _showSavedTextLearnedSnackBar(context);
             break;
@@ -112,6 +115,10 @@ class _HomePageState extends State<HomePage> {
 
   void _showTextAlreadySavedErrorSnackBar(BuildContext context) {
     _showErrorSnackBar(context, context.strings.homeTextAlreadySavedError);
+  }
+
+  void _showTextAlreadyLearnedSnackBar(BuildContext context) {
+    _showErrorSnackBar(context, context.strings.homeTextAlreadyLearnedError);
   }
 
   void _showTranslationFailureSnackBar(BuildContext context) {

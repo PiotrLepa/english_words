@@ -7,6 +7,7 @@ class FirestoreTextsService {
   static const _collection = 'words';
   static const _isLearnedField = 'isLearned';
   static const _creationDateField = 'creationDate';
+  static const _originalTextField = 'originalText';
 
   final FirebaseFirestore _firestore;
 
@@ -16,6 +17,17 @@ class FirestoreTextsService {
       .collection(_collection)
       .add(text.toJson())
       .then((document) => text.copyWith(id: document.id));
+
+  Future<SavedTextResponse?> getByOriginalText(String originalText) => _firestore
+          .collection(_collection)
+          .where(_originalTextField, isEqualTo: originalText)
+          .limit(1)
+          .get()
+          .then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          return _parseSavedText(snapshot.docs.first);
+        }
+      });
 
   Future<List<SavedTextResponse>> getTextsToLearn() =>
       _getTexts(isLearned: false);

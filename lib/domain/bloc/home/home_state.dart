@@ -8,6 +8,7 @@ enum HomeStatus {
   translationSuccessful,
   translationFailure,
   textAlreadySaved,
+  textAlreadyLearned,
   savedTextLearned,
   undoAddingTextToLearned,
   savedTextDeleted,

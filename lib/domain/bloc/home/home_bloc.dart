@@ -4,6 +4,7 @@ import 'package:english_words/domain/model/modified_text/modified_text.dart';
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
+import 'package:english_words/domain/use_case/get_text_by_original_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_texts_to_learn_use_case.dart';
 import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_saved_text_use_case.dart';
@@ -20,6 +21,7 @@ part 'home_state.dart';
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final GetTextByOriginalTextUseCase _getTextByOriginalTextUseCase;
   final GetTextsToLearnUseCase _getTextsToLearnUseCase;
   final GetInfoAndSaveTextUseCase _getInfoAndSaveTextUseCase;
   final SaveTextUseCase _saveTextUseCase;
@@ -31,6 +33,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ModifiedText? _lastLearnedText;
 
   HomeBloc(
+    this._getTextByOriginalTextUseCase,
     this._getTextsToLearnUseCase,
     this._getInfoAndSaveTextUseCase,
     this._saveTextUseCase,
@@ -75,8 +78,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     TextSubmitted event,
     Emitter<HomeState> emit,
   ) async {
-    final trimmedText = event.text.trim();
-    if (trimmedText.isEmpty ||
+    if (event.text.isEmpty ||
         state.status == HomeStatus.translationInProgress) {
       return;
     }
@@ -85,14 +87,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       status: HomeStatus.translationInProgress,
     ));
 
-    if (_isTextAlreadySaved(trimmedText)) {
-      emit(state.copyWith(
-        status: HomeStatus.textAlreadySaved,
-      ));
+    final savedText = await _getTextByOriginalTextUseCase.invoke(event.text);
+    if (savedText != null) {
+      if (savedText.isLearned) {
+        emit(state.copyWith(
+          status: HomeStatus.textAlreadyLearned,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: HomeStatus.textAlreadySaved,
+        ));
+      }
       return;
     }
 
-    await _getInfoAndSaveTextUseCase.invoke(trimmedText).then((textInfo) {
+    await _getInfoAndSaveTextUseCase.invoke(event.text).then((textInfo) {
       emit(state.copyWith(
         status: HomeStatus.translationSuccessful,
         textsToLearn: [textInfo, ...state.textsToLearn],
@@ -108,9 +117,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
     });
   }
-
-  bool _isTextAlreadySaved(String text) =>
-      state.textsToLearn.any((element) => element.originalText == text);
 
   Future<void> _onTextAddedToLearned(
     TextAddedToLearned event,
