@@ -1,6 +1,7 @@
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/common/widgets/base_saved_text_list_item.dart';
+import 'package:english_words/presentation/common/widgets/text_definitions.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -42,14 +43,21 @@ class SavedTextItem extends StatelessWidget {
           onItemSwipedLeft(item);
         }
       },
-      child: BaseSavedTextListItem(
-        backgroundDecoration: BoxDecoration(color: backgroundColor),
-        firstWidget: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(item.originalText),
-        ),
-        secondWidget: _buildTranscription(context),
-        thirdWidget: _buildTranslation(),
+      child: Column(
+        children: [
+          BaseSavedTextListItem(
+            backgroundDecoration: BoxDecoration(color: backgroundColor),
+            firstWidget: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(item.originalText),
+            ),
+            secondWidget: _buildTranscription(context),
+            thirdWidget: _buildTranslation(),
+          ),
+          item.definitions != null
+              ? TextDefinitions(definitions: item.definitions!)
+              : const SizedBox(),
+        ],
       ),
     );
   }
