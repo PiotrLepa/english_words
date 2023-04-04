@@ -1,5 +1,4 @@
 import 'package:english_words/domain/model/word_definitions/word_definitions.dart';
-import 'package:english_words/presentation/common/widgets/word_definition_item.dart';
 import 'package:english_words/presentation/common/widgets/word_definitions_list.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,8 @@ class TextDefinitions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = definitions
-        .map((wordDefinitions) => WordDefinitionsList(definitions: wordDefinitions))
+        .map((wordDefinitions) =>
+            WordDefinitionsList(definitions: wordDefinitions))
         .toList();
 
     return Column(

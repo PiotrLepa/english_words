@@ -5,7 +5,7 @@ import 'package:english_words/presentation/common/widgets/text_definitions.dart'
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
-class SavedTextItem extends StatelessWidget {
+class SavedTextItem extends StatefulWidget {
   final SavedText item;
   final Color backgroundColor;
   final void Function(SavedText item) onTranslationLongPressed;
@@ -26,9 +26,17 @@ class SavedTextItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SavedTextItem> createState() => _SavedTextItemState();
+}
+
+class _SavedTextItemState extends State<SavedTextItem> {
+  final _padding = 12.0;
+  var _areDefinitionsExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(item.originalText),
+      key: Key(widget.item.originalText),
       background: Container(
         color: ThemeProvider.of(context).accentColor,
       ),
@@ -38,24 +46,30 @@ class SavedTextItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
         if (direction == DismissDirection.startToEnd) {
-          onItemSwipedRight(item);
+          widget.onItemSwipedRight(widget.item);
         } else if (direction == DismissDirection.endToStart) {
-          onItemSwipedLeft(item);
+          widget.onItemSwipedLeft(widget.item);
         }
       },
       child: Column(
         children: [
           BaseSavedTextListItem(
-            backgroundDecoration: BoxDecoration(color: backgroundColor),
+            backgroundDecoration: BoxDecoration(color: widget.backgroundColor),
             firstWidget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(item.originalText),
+              padding: EdgeInsets.only(
+                top: _padding,
+                bottom: _padding,
+                left: _padding,
+              ),
+              child: Text(widget.item.originalText),
             ),
             secondWidget: _buildTranscription(context),
             thirdWidget: _buildTranslation(),
           ),
-          item.definitions != null
-              ? TextDefinitions(definitions: item.definitions!)
+          widget.item.definitions != null && _areDefinitionsExpanded
+              ? TextDefinitions(
+                  definitions: widget.item.definitions!,
+                )
               : const SizedBox(),
         ],
       ),
@@ -65,7 +79,7 @@ class SavedTextItem extends StatelessWidget {
   Widget _buildTranscription(BuildContext context) {
     final textColor = ThemeProvider.of(context).textColor;
     final errorTextColor = ThemeProvider.of(context).errorColor;
-    final wordsTranscriptions = item.ipaTranscription.words;
+    final wordsTranscriptions = widget.item.ipaTranscription.words;
     final textSpans = wordsTranscriptions
         .asMap()
         .entries
@@ -80,16 +94,16 @@ class SavedTextItem extends StatelessWidget {
         .toList();
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
-        onTranscriptionPressed(item);
+        widget.onTranscriptionPressed(widget.item);
       },
       onLongPress: () {
-        onTranscriptionLongPressed(item);
+        widget.onTranscriptionLongPressed(widget.item);
       },
       child: Container(
         height: double.infinity,
         alignment: Alignment.centerLeft,
-        color: Colors.transparent,
         child: RichText(
           text: TextSpan(
             text: '',
@@ -101,11 +115,36 @@ class SavedTextItem extends StatelessWidget {
   }
 
   Widget _buildTranslation() {
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              widget.onTranslationLongPressed(widget.item);
+            },
+            child: Text(widget.item.translations.getAsText()),
+          ),
+        ),
+        _getExpandOrCollapseIcon()
+      ],
+    );
+  }
+
+  Widget _getExpandOrCollapseIcon() {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
-        onTranslationLongPressed(item);
+        setState(() {
+          _areDefinitionsExpanded = !_areDefinitionsExpanded;
+        });
       },
-      child: Text(item.translations.getAsText()),
+      child: Container(
+        height: double.infinity,
+        padding: EdgeInsets.only(right: _padding),
+        child: Icon(_areDefinitionsExpanded
+            ? Icons.keyboard_arrow_up_rounded
+            : Icons.keyboard_arrow_down_rounded),
+      ),
     );
   }
 }

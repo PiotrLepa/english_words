@@ -19,7 +19,6 @@ class BaseSavedTextListItem extends StatelessWidget {
     const padding = 16.0;
     return Container(
       decoration: backgroundDecoration,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: IntrinsicHeight(
         child: Row(
           children: [
