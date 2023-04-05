@@ -120,7 +120,7 @@ class _SavedTextItemState extends State<SavedTextItem> {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () {
+            onLongPress: () {
               widget.onTranslationLongPressed(widget.item);
             },
             child: Text(widget.item.translations.getAsText()),
