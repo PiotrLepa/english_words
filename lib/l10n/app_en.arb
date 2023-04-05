@@ -16,5 +16,9 @@
   "translationFailureMessage": "An error occurred during the translation",
   "learnedTextsAppBarTitle": "Learned texts",
   "learnedTextsNoEntries": "No learned texts",
-  "learnedTextsTextMovedToLearn": "Text moved to learn"
+  "learnedTextsTextMovedToLearn": "Text moved to learn",
+  "wordDefinition": "Definition:",
+  "wordExamples": "Examples:",
+  "wordSynonyms": "Synonyms:",
+  "wordAntonyms": "Antonyms:"
 }

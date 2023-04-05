@@ -1,4 +1,6 @@
 import 'package:english_words/domain/model/word_definitions/word_definition.dart';
+import 'package:english_words/presentation/extensions.dart';
+import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class WordDefinitionItem extends StatelessWidget {
@@ -14,77 +16,84 @@ class WordDefinitionItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _getPartOfSpeech(),
-        ..._getDefinition(),
-        ..._getExamples(),
-        ..._getSynonyms(),
-        ..._getAntonyms(),
+        ..._getPartOfSpeech(context),
+        ..._getDefinition(context),
+        ..._getExamples(context),
+        ..._getSynonyms(context),
+        ..._getAntonyms(context),
       ],
     );
   }
 
-  Widget _getPartOfSpeech() {
-    if (wordDefinition.partOfSpeech == null) return const SizedBox();
+  List<Widget> _getPartOfSpeech(BuildContext context) {
+    if (wordDefinition.partOfSpeech == null) return const [];
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            _getHeader('Part of speech: '),
-            Text(wordDefinition.partOfSpeech!),
-          ],
+    return [
+      SelectableText(
+        wordDefinition.partOfSpeech!,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: ThemeProvider.of(context).primaryColor,
         ),
-        _getDivider(),
-      ],
-    );
-  }
-
-  List<Widget> _getDefinition() {
-    return [
-      _getHeader('Definition:'),
-      Text(wordDefinition.definition),
-      _getDivider(),
+      ),
+      _getSeparator(),
     ];
   }
 
-  List<Widget> _getExamples() {
-    if ((wordDefinition.examples ?? []).isEmpty) return List.empty();
-
+  List<Widget> _getDefinition(BuildContext context) {
     return [
-      _getHeader('Examples:'),
-      ...wordDefinition.examples!.map((example) => Text(example)),
-      _getDivider(),
+      _getHeader(context.strings.wordDefinition),
+      _getContent(wordDefinition.definition),
+      _getSeparator(),
     ];
   }
 
-  List<Widget> _getSynonyms() {
-    if ((wordDefinition.synonyms ?? []).isEmpty) return List.empty();
-
-    return [
-      _getHeader('Synonyms:'),
-      Text(wordDefinition.synonyms!.join(', ')),
-      _getDivider(),
-    ];
+  List<Widget> _getExamples(BuildContext context) {
+    return wordDefinition.examples.ifNotEmpty((items) => [
+          _getHeader(context.strings.wordExamples),
+          ...items.map((example) => _getContent(example)),
+          _getSeparator(),
+        ]);
   }
 
-  List<Widget> _getAntonyms() {
-    if ((wordDefinition.antonyms ?? []).isEmpty) return List.empty();
-
-    return [
-      _getHeader('Antonyms:'),
-      Text(wordDefinition.synonyms!.join(', ')),
-      _getDivider(),
-    ];
+  List<Widget> _getSynonyms(BuildContext context) {
+    return wordDefinition.synonyms.ifNotEmpty((items) => [
+          _getHeader(context.strings.wordSynonyms),
+          _getContent(items.join(', ')),
+          _getSeparator(),
+        ]);
   }
 
-  Widget _getDivider() {
-    return const Divider(height: 1);
+  List<Widget> _getAntonyms(BuildContext context) {
+    return wordDefinition.antonyms.ifNotEmpty((items) => [
+          _getHeader(context.strings.wordSynonyms),
+          _getContent(items.join(', ')),
+          _getSeparator(),
+        ]);
   }
 
-  Text _getHeader(String text) {
+  Widget _getHeader(String text) {
     return Text(
       text,
-      style: const TextStyle(fontWeight: FontWeight.bold),
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+      ),
     );
+  }
+
+  Widget _getContent(String text) {
+    return SelectableText(text);
+  }
+
+  Widget _getSeparator() {
+    return const SizedBox(height: 8);
+  }
+}
+
+extension<T> on List<T>? {
+  List<Widget> ifNotEmpty(List<Widget> Function(List<T> items) widgetBuilder) {
+    if ((this ?? []).isEmpty) return [];
+    return widgetBuilder(this!);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:english_words/domain/model/word_definitions/word_definitions.dart';
 import 'package:english_words/presentation/common/widgets/word_definition_item.dart';
+import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class WordDefinitionsList extends StatelessWidget {
@@ -16,25 +17,28 @@ class WordDefinitionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = definitions.results
         .map((definition) => WordDefinitionItem(wordDefinition: definition))
-        .expand((element) => [element, const SizedBox(height: 20)])
+        .expand((element) => [element, const SizedBox(height: 12)])
         .toList();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 12),
-        Visibility(
-          visible: showWord,
-          child: Text(
-            definitions.word,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Visibility(
+            visible: showWord,
+            child: Text(
+              definitions.word,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: ThemeProvider.of(context).accentColor,
+              ),
             ),
           ),
-        ),
-        ...items,
-      ],
+          ...items,
+        ],
+      ),
     );
   }
 }

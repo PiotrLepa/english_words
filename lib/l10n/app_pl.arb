@@ -16,5 +16,9 @@
   "translationFailureMessage": "Wystąpił błąd podczas tłumaczenia",
   "learnedTextsAppBarTitle": "Nauczone słówka",
   "learnedTextsNoEntries": "Brak nauczyonych słówek",
-  "learnedTextsTextMovedToLearn": "Tekst przeniesiony do nauki"
+  "learnedTextsTextMovedToLearn": "Tekst przeniesiony do nauki",
+  "wordDefinition": "Definicja:",
+  "wordExamples": "Przykłady:",
+  "wordSynonyms": "Synonimy:",
+  "wordAntonyms": "Antonimy:"
 }
