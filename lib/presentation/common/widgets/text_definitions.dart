@@ -3,18 +3,22 @@ import 'package:english_words/presentation/common/widgets/word_definitions_list.
 import 'package:flutter/material.dart';
 
 class TextDefinitions extends StatelessWidget {
+  final String originalText;
   final List<WordDefinitions> definitions;
 
-  const TextDefinitions({
+  TextDefinitions({
     Key? key,
+    required this.originalText,
     required this.definitions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final items = definitions
-        .map((wordDefinitions) =>
-            WordDefinitionsList(definitions: wordDefinitions))
+        .map((wordDefinitions) => WordDefinitionsList(
+              showWord: wordDefinitions.word != originalText,
+              definitions: wordDefinitions,
+            ))
         .toList();
 
     return Column(

@@ -3,10 +3,12 @@ import 'package:english_words/presentation/common/widgets/word_definition_item.d
 import 'package:flutter/material.dart';
 
 class WordDefinitionsList extends StatelessWidget {
+  final bool showWord;
   final WordDefinitions definitions;
 
   const WordDefinitionsList({
     Key? key,
+    required this.showWord,
     required this.definitions,
   }) : super(key: key);
 
@@ -21,11 +23,14 @@ class WordDefinitionsList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        Text(
-          definitions.word,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        Visibility(
+          visible: showWord,
+          child: Text(
+            definitions.word,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         ...items,

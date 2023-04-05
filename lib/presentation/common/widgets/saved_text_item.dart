@@ -68,6 +68,7 @@ class _SavedTextItemState extends State<SavedTextItem> {
           ),
           widget.item.definitions != null && _areDefinitionsExpanded
               ? TextDefinitions(
+                  originalText: widget.item.originalText,
                   definitions: widget.item.definitions!,
                 )
               : const SizedBox(),
