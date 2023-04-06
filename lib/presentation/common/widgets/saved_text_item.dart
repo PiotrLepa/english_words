@@ -1,7 +1,7 @@
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/gen/fonts.gen.dart';
 import 'package:english_words/presentation/common/widgets/base_saved_text_list_item.dart';
-import 'package:english_words/presentation/common/widgets/text_definitions.dart';
+import 'package:english_words/presentation/common/widgets/word_definitions_list.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,6 @@ class SavedTextItem extends StatefulWidget {
 
 class _SavedTextItemState extends State<SavedTextItem> {
   final _padding = 12.0;
-  late final _areDefinitionsPresent = widget.item.definitions != null;
   var _areDefinitionsExpanded = false;
 
   @override
@@ -67,12 +66,7 @@ class _SavedTextItemState extends State<SavedTextItem> {
             secondWidget: _buildTranscription(context),
             thirdWidget: _buildTranslation(),
           ),
-          _areDefinitionsPresent && _areDefinitionsExpanded
-              ? TextDefinitions(
-                  originalText: widget.item.originalText,
-                  definitions: widget.item.definitions!,
-                )
-              : const SizedBox(),
+          _buildDefinitionsIfExpanded(),
         ],
       ),
     );
@@ -133,7 +127,7 @@ class _SavedTextItemState extends State<SavedTextItem> {
   }
 
   Widget _getExpandOrCollapseIcon() {
-    if (!_areDefinitionsPresent) return const SizedBox();
+    if (widget.item.definitions == null) return const SizedBox();
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -150,5 +144,15 @@ class _SavedTextItemState extends State<SavedTextItem> {
             : Icons.keyboard_arrow_down_rounded),
       ),
     );
+  }
+
+  Widget _buildDefinitionsIfExpanded() {
+    final definitions = widget.item.definitions;
+    return definitions != null && _areDefinitionsExpanded
+        ? WordDefinitionsList(
+            showWord: definitions.word != widget.item.originalText,
+            definitions: definitions,
+          )
+        : const SizedBox();
   }
 }

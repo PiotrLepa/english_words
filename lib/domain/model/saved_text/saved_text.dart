@@ -12,7 +12,7 @@ class SavedText with _$SavedText {
     required String originalText,
     required Translations translations,
     required IpaTranscription ipaTranscription,
-    List<WordDefinitions>? definitions,
+    WordDefinitions? definitions,
     required String sourceLanguage,
     required String targetLanguage,
     required bool isLearned,

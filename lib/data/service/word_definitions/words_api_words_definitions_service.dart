@@ -27,7 +27,8 @@ class WordsApiWordsDefinitionsService implements WordDefinitionsService {
         return WordDefinitionsResponse.fromJson(json);
       } else {
         return Future.error(
-            Exception(response.toString())); // TODO return meaningful exception
+          Exception(utf8.decode(response.bodyBytes)),
+        ); // TODO return meaningful exception
       }
     });
   }

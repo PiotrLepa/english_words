@@ -17,7 +17,7 @@ class SavedTextResponse with _$SavedTextResponse {
     required String originalText,
     required TranslationsResponse translations,
     required IpaTranscriptionResponse ipaTranscription,
-    List<WordDefinitionsResponse>? definitions,
+    WordDefinitionsResponse? definitions,
     required String sourceLanguage,
     required String targetLanguage,
     required bool isLearned,
