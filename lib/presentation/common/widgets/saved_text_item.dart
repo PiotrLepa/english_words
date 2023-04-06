@@ -31,6 +31,7 @@ class SavedTextItem extends StatefulWidget {
 
 class _SavedTextItemState extends State<SavedTextItem> {
   final _padding = 12.0;
+  late final _areDefinitionsPresent = widget.item.definitions != null;
   var _areDefinitionsExpanded = false;
 
   @override
@@ -66,7 +67,7 @@ class _SavedTextItemState extends State<SavedTextItem> {
             secondWidget: _buildTranscription(context),
             thirdWidget: _buildTranslation(),
           ),
-          widget.item.definitions != null && _areDefinitionsExpanded
+          _areDefinitionsPresent && _areDefinitionsExpanded
               ? TextDefinitions(
                   originalText: widget.item.originalText,
                   definitions: widget.item.definitions!,
@@ -132,6 +133,8 @@ class _SavedTextItemState extends State<SavedTextItem> {
   }
 
   Widget _getExpandOrCollapseIcon() {
+    if (!_areDefinitionsPresent) return const SizedBox();
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
