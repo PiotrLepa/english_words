@@ -1,7 +1,9 @@
 import 'package:english_words/di/dependency_injection.dart';
 import 'package:english_words/domain/bloc/home/home_bloc.dart';
+import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/presentation/common/text_to_speech_constants.dart';
 import 'package:english_words/presentation/common/widgets/edit_translation_dialog.dart';
+import 'package:english_words/presentation/common/widgets/text_info_bottom_sheet_dialog.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/home/widgets/home_content.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
@@ -57,6 +59,12 @@ class _HomePageState extends State<HomePage> {
           case HomeStatus.savedTextDeleted:
             _showSavedTextDeletedSnackBar(context);
             break;
+          case HomeStatus.selectedTextTranslated:
+            _showBottomSheetWithTranslatedText(
+              context,
+              newState.translatedSelectedText!,
+            );
+            break;
           default:
             break;
         }
@@ -102,6 +110,14 @@ class _HomePageState extends State<HomePage> {
               },
               onTextDeleted: (item) {
                 context.read<HomeBloc>().add(HomeEvent.savedTextDeleted(item));
+              },
+              onTranslateClicked: (text) {
+                context.read<HomeBloc>().add(HomeEvent.translateClicked(text));
+              },
+              onTranslateAndSaveClicked: (text) {
+                context
+                    .read<HomeBloc>()
+                    .add(HomeEvent.translateAndSaveClicked(text));
               },
             );
         }
@@ -169,5 +185,32 @@ class _HomePageState extends State<HomePage> {
   void _showSingleSnackBar(SnackBar snackBar) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _showBottomSheetWithTranslatedText(
+    BuildContext context,
+    SavedText text,
+  ) {
+    showBottomSheetWithTextInfo(
+      context: context,
+      text: text,
+      onTranslationLongPressed: (item) {},
+      onTranscriptionPressed: (item) {
+        _textToSpeech
+          ..setSpeechRate(TextToSpeechConstants.normalSpeedRate)
+          ..speak(item.originalText);
+      },
+      onTranscriptionLongPressed: (item) {
+        _textToSpeech
+          ..setSpeechRate(TextToSpeechConstants.slowSpeedRate)
+          ..speak(item.originalText);
+      },
+      onTranslateClicked: (text) {
+        context.read<HomeBloc>().add(HomeEvent.translateClicked(text));
+      },
+      onTranslateAndSaveClicked: (text) {
+        context.read<HomeBloc>().add(HomeEvent.translateAndSaveClicked(text));
+      },
+    );
   }
 }

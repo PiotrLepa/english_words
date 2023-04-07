@@ -1,14 +1,19 @@
 import 'package:english_words/domain/model/word_definitions/word_definition.dart';
+import 'package:english_words/presentation/common/widgets/word_definition_item_section.dart';
 import 'package:english_words/presentation/extensions.dart';
 import 'package:english_words/presentation/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class WordDefinitionItem extends StatelessWidget {
   final WordDefinition wordDefinition;
+  final void Function(String text) onTranslateClicked;
+  final void Function(String text) onTranslateAndSaveClicked;
 
   const WordDefinitionItem({
     Key? key,
     required this.wordDefinition,
+    required this.onTranslateClicked,
+    required this.onTranslateAndSaveClicked,
   }) : super(key: key);
 
   @override
@@ -48,73 +53,55 @@ class WordDefinitionItem extends StatelessWidget {
   }
 
   Widget? _getDefinition(BuildContext context) {
-    return _getSection(
-      children: [
-        _getHeader(context.strings.wordDefinition),
-        _getContent(wordDefinition.definition),
-      ],
+    return _buildSection(
+      header: context.strings.wordDefinition,
+      contents: [wordDefinition.definition],
     );
   }
 
   Widget? _getExamples(BuildContext context) {
-    return _getSectionForList(
-      wordDefinition.examples,
-      (items) => [
-        _getHeader(context.strings.wordExamples),
-        ...items.map((example) => _getContent(example)),
-      ],
+    final examples = wordDefinition.examples?.toNullIfEmpty();
+    if (examples == null) return null;
+
+    return _buildSection(
+      header: context.strings.wordExamples,
+      contents: examples,
     );
   }
 
   Widget? _getSynonyms(BuildContext context) {
-    return _getSectionForList(
-      wordDefinition.synonyms,
-      (items) => [
-        _getHeader(context.strings.wordSynonyms),
-        _getContent(items.join(', ')),
-      ],
+    final text = wordDefinition.synonyms?.toNullIfEmpty()?.join(', ');
+    if (text == null) return null;
+
+    return _buildSection(
+      header: context.strings.wordSynonyms,
+      contents: [text],
     );
   }
 
   Widget? _getAntonyms(BuildContext context) {
-    return _getSectionForList(
-      wordDefinition.antonyms,
-      (items) => [
-        _getHeader(context.strings.wordSynonyms),
-        _getContent(items.join(', ')),
-      ],
+    final text = wordDefinition.antonyms?.toNullIfEmpty()?.join(', ');
+    if (text == null) return null;
+
+    return _buildSection(
+      header: context.strings.wordAntonyms,
+      contents: [text],
     );
   }
 
-  Widget _getHeader(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-
-  Widget _getContent(String text) {
-    return SelectableText(text);
-  }
-
-  Widget? _getSectionForList<T>(
-    List<T>? items,
-    List<Widget> Function(List<T> items) widgetBuilder,
-  ) {
-    if ((items ?? []).isEmpty) return null;
-    return _getSection(
-      children: widgetBuilder(items!),
-    );
-  }
-
-  Widget? _getSection({
-    required List<Widget> children,
+  WordDefinitionItemSection _buildSection({
+    required String header,
+    required List<String> contents,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: children,
+    return WordDefinitionItemSection(
+      header: header,
+      contents: contents,
+      onTranslateClicked: onTranslateClicked,
+      onTranslateAndSaveClicked: onTranslateAndSaveClicked,
     );
   }
+}
+
+extension<T> on List<T> {
+  List<T>? toNullIfEmpty() => isEmpty ? null : this;
 }

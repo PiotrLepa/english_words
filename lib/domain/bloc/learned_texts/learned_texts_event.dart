@@ -18,4 +18,11 @@ class LearnedTextsEvent with _$LearnedTextsEvent {
     SavedText item,
     String? newTranslation,
   ) = TranslationEdited;
+
+  const factory LearnedTextsEvent.translateClicked(String text) = TranslateClicked;
+
+  const factory LearnedTextsEvent.translateAndSaveClicked(String text) = TranslateAndSaveClicked;
+
+  const factory LearnedTextsEvent.popupWithTranslatedTextClosed() =
+  PopupWithTranslatedTextClosed;
 }

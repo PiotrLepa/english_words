@@ -4,7 +4,6 @@
   "edit": "Edit",
   "editTranslation": "Edit the translation",
   "homeInputHint":"Enter a text to be translated",
-  "homeTranslateButton": "Translate",
   "homeSavedTextHeaderOriginalText": "English",
   "homeSavedTextHeaderTranslation": "Polish",
   "homeSavedTextHeaderTranscription": "Transcription",
@@ -20,5 +19,7 @@
   "wordDefinition": "Definition:",
   "wordExamples": "Examples:",
   "wordSynonyms": "Synonyms:",
-  "wordAntonyms": "Antonyms:"
+  "wordAntonyms": "Antonyms:",
+  "contextMenuTranslateButton": "Translate",
+  "contextMenuTranslateAndSaveButton": "Save"
 }

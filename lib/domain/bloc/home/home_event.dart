@@ -19,4 +19,12 @@ class HomeEvent with _$HomeEvent {
     SavedText item,
     String? newTranslation,
   ) = TranslationEdited;
+
+  const factory HomeEvent.translateClicked(String text) = TranslateClicked;
+
+  const factory HomeEvent.translateAndSaveClicked(String text) =
+      TranslateAndSaveClicked;
+
+  const factory HomeEvent.popupWithTranslatedTextClosed() =
+      PopupWithTranslatedTextClosed;
 }

@@ -9,6 +9,12 @@ enum LearnedTextsStatus {
   textDeleted,
   undoTextDeletion,
   translationUpdated,
+  translationInProgress,
+  translationSuccessful,
+  translationFailure,
+  textAlreadyLearned,
+  textAlreadySaved,
+  selectedTextTranslated,
 }
 
 @freezed
@@ -16,5 +22,6 @@ class LearnedTextsState with _$LearnedTextsState {
   const factory LearnedTextsState({
     required LearnedTextsStatus status,
     required List<SavedText> learnedTexts,
+    SavedText? translatedSelectedText,
   }) = _LearnedTextsState;
 }

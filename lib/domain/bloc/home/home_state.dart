@@ -14,6 +14,7 @@ enum HomeStatus {
   savedTextDeleted,
   undoSavedTextDeletion,
   translationUpdated,
+  selectedTextTranslated,
 }
 
 @freezed
@@ -21,5 +22,6 @@ class HomeState with _$HomeState {
   const factory HomeState({
     required HomeStatus status,
     required List<SavedText> textsToLearn,
+    SavedText? translatedSelectedText,
   }) = _HomeState;
 }

@@ -8,21 +8,23 @@ import 'package:flutter/material.dart';
 class SavedTextItem extends StatefulWidget {
   final SavedText item;
   final Color backgroundColor;
+  final bool isAlwaysExpanded;
   final void Function(SavedText item) onTranslationLongPressed;
   final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
-  final void Function(SavedText item) onItemSwipedRight;
-  final void Function(SavedText item) onItemSwipedLeft;
+  final void Function(String text) onTranslateClicked;
+  final void Function(String text) onTranslateAndSaveClicked;
 
   const SavedTextItem({
     Key? key,
     required this.item,
     required this.backgroundColor,
+    this.isAlwaysExpanded = false,
     required this.onTranslationLongPressed,
     required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
-    required this.onItemSwipedRight,
-    required this.onItemSwipedLeft,
+    required this.onTranslateClicked,
+    required this.onTranslateAndSaveClicked,
   }) : super(key: key);
 
   @override
@@ -35,40 +37,23 @@ class _SavedTextItemState extends State<SavedTextItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(widget.item.originalText),
-      background: Container(
-        color: ThemeProvider.of(context).accentColor,
-      ),
-      secondaryBackground: Container(
-        color: ThemeProvider.of(context).listItemDelete,
-      ),
-      direction: DismissDirection.horizontal,
-      onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd) {
-          widget.onItemSwipedRight(widget.item);
-        } else if (direction == DismissDirection.endToStart) {
-          widget.onItemSwipedLeft(widget.item);
-        }
-      },
-      child: Column(
-        children: [
-          BaseSavedTextListItem(
-            backgroundDecoration: BoxDecoration(color: widget.backgroundColor),
-            firstWidget: Padding(
-              padding: EdgeInsets.only(
-                top: _padding,
-                bottom: _padding,
-                left: _padding,
-              ),
-              child: Text(widget.item.originalText),
+    return Column(
+      children: [
+        BaseSavedTextListItem(
+          backgroundDecoration: BoxDecoration(color: widget.backgroundColor),
+          firstWidget: Padding(
+            padding: EdgeInsets.only(
+              top: _padding,
+              bottom: _padding,
+              left: _padding,
             ),
-            secondWidget: _buildTranscription(context),
-            thirdWidget: _buildTranslation(),
+            child: Text(widget.item.originalText),
           ),
-          _buildDefinitionsIfExpanded(),
-        ],
-      ),
+          secondWidget: _buildTranscription(context),
+          thirdWidget: _buildTranslation(),
+        ),
+        _buildDefinitionsIfExpanded(),
+      ],
     );
   }
 
@@ -127,7 +112,9 @@ class _SavedTextItemState extends State<SavedTextItem> {
   }
 
   Widget _getExpandOrCollapseIcon() {
-    if (widget.item.definitions == null) return const SizedBox();
+    if (widget.item.definitions == null || widget.isAlwaysExpanded) {
+      return const SizedBox();
+    }
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -148,10 +135,13 @@ class _SavedTextItemState extends State<SavedTextItem> {
 
   Widget _buildDefinitionsIfExpanded() {
     final definitions = widget.item.definitions;
-    return definitions != null && _areDefinitionsExpanded
+    return definitions != null &&
+            (widget.isAlwaysExpanded || _areDefinitionsExpanded)
         ? WordDefinitionsList(
             showWord: definitions.word != widget.item.originalText,
             definitions: definitions,
+            onTranslateClicked: widget.onTranslateClicked,
+            onTranslateAndSaveClicked: widget.onTranslateAndSaveClicked,
           )
         : const SizedBox();
   }

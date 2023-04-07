@@ -5,27 +5,31 @@ import 'package:english_words/presentation/home/widgets/home_text_input.dart';
 import 'package:flutter/material.dart';
 
 class HomeContent extends StatelessWidget {
+  final List<SavedText> textsToLearn;
+  final bool isTranslatingInProgress;
+  final TextEditingController textEditController;
   final void Function(String text) onTextSubmitted;
   final void Function(SavedText item) onTranslationLongPressed;
   final void Function(SavedText item) onTranscriptionPressed;
   final void Function(SavedText item) onTranscriptionLongPressed;
   final void Function(SavedText item) onTextAddedToLearned;
   final void Function(SavedText item) onTextDeleted;
-  final List<SavedText> textsToLearn;
-  final bool isTranslatingInProgress;
-  final TextEditingController textEditController;
+  final void Function(String text) onTranslateClicked;
+  final void Function(String text) onTranslateAndSaveClicked;
 
   const HomeContent({
     Key? key,
+    required this.textsToLearn,
+    required this.isTranslatingInProgress,
+    required this.textEditController,
     required this.onTextSubmitted,
     required this.onTranslationLongPressed,
     required this.onTranscriptionPressed,
     required this.onTranscriptionLongPressed,
     required this.onTextAddedToLearned,
     required this.onTextDeleted,
-    required this.textsToLearn,
-    required this.isTranslatingInProgress,
-    required this.textEditController,
+    required this.onTranslateClicked,
+    required this.onTranslateAndSaveClicked,
   }) : super(key: key);
 
   @override
@@ -56,6 +60,8 @@ class HomeContent extends StatelessWidget {
         onTranscriptionLongPressed: onTranscriptionLongPressed,
         onItemSwipedRight: onTextAddedToLearned,
         onItemSwipedLeft: onTextDeleted,
+        onTranslateClicked: onTranslateClicked,
+        onTranslateAndSaveClicked: onTranslateAndSaveClicked,
       ),
     );
   }

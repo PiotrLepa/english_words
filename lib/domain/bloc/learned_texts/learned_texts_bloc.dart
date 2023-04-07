@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:english_words/domain/model/modified_text/modified_text.dart';
 import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
+import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_learned_texts_use_case.dart';
+import 'package:english_words/domain/use_case/get_text_by_original_text_use_case.dart';
+import 'package:english_words/domain/use_case/get_text_info_use_case.dart';
 import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_translation_use_case.dart';
@@ -20,6 +23,9 @@ part 'learned_texts_state.dart';
 @injectable
 class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
   final GetLearnedTextsUseCase _getLearnedTextsUseCase;
+  final GetTextByOriginalTextUseCase _getTextByOriginalTextUseCase;
+  final GetInfoAndSaveTextUseCase _getInfoAndSaveTextUseCase;
+  final GetTextInfoUseCase _getTextInfoUseCase;
   final SaveTextUseCase _saveTextUseCase;
   final UpdateSavedTextUseCase _updateSavedTextUseCase;
   final DeleteSavedTextUseCase _deleteSavedTextUseCase;
@@ -30,6 +36,9 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
 
   LearnedTextsBloc(
     this._getLearnedTextsUseCase,
+    this._getTextByOriginalTextUseCase,
+    this._getInfoAndSaveTextUseCase,
+    this._getTextInfoUseCase,
     this._saveTextUseCase,
     this._updateSavedTextUseCase,
     this._deleteSavedTextUseCase,
@@ -44,6 +53,9 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
     on<TextDeleted>(_onTextDeleted);
     on<UndoDeletingText>(_onUndoDeletingText);
     on<TranslationEdited>(_onTranslationEdited);
+    on<TranslateClicked>(_onTranslateClicked);
+    on<TranslateAndSaveClicked>(_onTranslateAndSaveClicked);
+    on<PopupWithTranslatedTextClosed>(_onPopupWithTranslatedTextClosed);
   }
 
   Future<void> _onScreenStarted(
@@ -184,12 +196,111 @@ class LearnedTextsBloc extends Bloc<LearnedTextsEvent, LearnedTextsState> {
         ..insert(indexToUpdate, updatedItem),
     ));
 
-    await _updateSavedTextUseCase.invoke(updatedItem).catchError((error, stackTrace) {
+    await _updateSavedTextUseCase
+        .invoke(updatedItem)
+        .catchError((error, stackTrace) {
       log(
         'failed to update translation',
         error: error,
         stackTrace: stackTrace,
       );
     });
+  }
+
+  Future<void> _onTranslateClicked(
+    TranslateClicked event,
+    Emitter<LearnedTextsState> emit,
+  ) async {
+    if (event.text.isEmpty ||
+        state.status == LearnedTextsStatus.translationInProgress) {
+      return Future.value(null);
+    }
+
+    emit(state.copyWith(
+      status: LearnedTextsStatus.translationInProgress,
+    ));
+
+    await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
+      emit(state.copyWith(
+        status: LearnedTextsStatus.selectedTextTranslated,
+        translatedSelectedText: textInfo,
+      ));
+    }).catchError((error, stackTrace) {
+      emit(state.copyWith(
+        status: LearnedTextsStatus.selectedTextTranslated,
+      ));
+      log(
+        'getting text info and saving failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
+  }
+
+  Future<void> _onTranslateAndSaveClicked(
+    TranslateAndSaveClicked event,
+    Emitter<LearnedTextsState> emit,
+  ) async {
+    await _getAndSaveTextInfoIfValid(event.text, emit).then((textInfo) {
+      emit(state.copyWith(
+        status: LearnedTextsStatus.selectedTextTranslated,
+        translatedSelectedText: textInfo,
+      ));
+    });
+  }
+
+  Future<SavedText?> _getAndSaveTextInfoIfValid(
+    String text,
+    Emitter<LearnedTextsState> emit,
+  ) async {
+    if (text.isEmpty ||
+        state.status == LearnedTextsStatus.translationInProgress) {
+      return Future.value(null);
+    }
+
+    emit(state.copyWith(
+      status: LearnedTextsStatus.translationInProgress,
+    ));
+
+    final savedText = await _getTextByOriginalTextUseCase.invoke(text);
+    if (savedText != null) {
+      if (savedText.isLearned) {
+        emit(state.copyWith(
+          status: LearnedTextsStatus.textAlreadyLearned,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: LearnedTextsStatus.textAlreadySaved,
+        ));
+      }
+      return Future.value(null);
+    }
+
+    try {
+      final textInfo = await _getInfoAndSaveTextUseCase.invoke(text);
+      emit(state.copyWith(
+        status: LearnedTextsStatus.translationSuccessful,
+      ));
+      return Future.value(textInfo);
+    } catch (error, stackTrace) {
+      emit(state.copyWith(
+        status: LearnedTextsStatus.translationFailure,
+      ));
+      log(
+        'getting text info and saving failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return Future.value(null);
+    }
+  }
+
+  Future<void> _onPopupWithTranslatedTextClosed(
+    PopupWithTranslatedTextClosed event,
+    Emitter<LearnedTextsState> emit,
+  ) async {
+    emit(state.copyWith(
+      translatedSelectedText: null,
+    ));
   }
 }

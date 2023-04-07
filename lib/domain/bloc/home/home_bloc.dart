@@ -5,6 +5,7 @@ import 'package:english_words/domain/model/saved_text/saved_text.dart';
 import 'package:english_words/domain/use_case/delete_saved_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_info_and_save_text_use_case.dart';
 import 'package:english_words/domain/use_case/get_text_by_original_text_use_case.dart';
+import 'package:english_words/domain/use_case/get_text_info_use_case.dart';
 import 'package:english_words/domain/use_case/get_texts_to_learn_use_case.dart';
 import 'package:english_words/domain/use_case/save_text_use_case.dart';
 import 'package:english_words/domain/use_case/update_saved_text_use_case.dart';
@@ -23,6 +24,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetTextByOriginalTextUseCase _getTextByOriginalTextUseCase;
   final GetTextsToLearnUseCase _getTextsToLearnUseCase;
+  final GetTextInfoUseCase _getTextInfoUseCase;
   final GetInfoAndSaveTextUseCase _getInfoAndSaveTextUseCase;
   final SaveTextUseCase _saveTextUseCase;
   final UpdateSavedTextUseCase _updateSavedTextUseCase;
@@ -35,6 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(
     this._getTextByOriginalTextUseCase,
     this._getTextsToLearnUseCase,
+    this._getTextInfoUseCase,
     this._getInfoAndSaveTextUseCase,
     this._saveTextUseCase,
     this._updateSavedTextUseCase,
@@ -51,6 +54,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SavedTextDeleted>(_onSavedTextDeleted);
     on<UndoDeletingSavedText>(_onUndoDeletingSavedText);
     on<TranslationEdited>(_onTranslationEdited);
+    on<TranslateClicked>(_onTranslateClicked);
+    on<TranslateAndSaveClicked>(_onTranslateAndSaveClicked);
+    on<PopupWithTranslatedTextClosed>(_onPopupWithTranslatedTextClosed);
   }
 
   Future<void> _onScreenStarted(
@@ -78,16 +84,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     TextSubmitted event,
     Emitter<HomeState> emit,
   ) async {
-    if (event.text.isEmpty ||
-        state.status == HomeStatus.translationInProgress) {
-      return;
+    await _getAndSaveTextInfoIfValid(event.text, emit);
+  }
+
+  Future<SavedText?> _getAndSaveTextInfoIfValid(
+    String text,
+    Emitter<HomeState> emit,
+  ) async {
+    if (text.isEmpty || state.status == HomeStatus.translationInProgress) {
+      return Future.value(null);
     }
 
     emit(state.copyWith(
       status: HomeStatus.translationInProgress,
     ));
 
-    final savedText = await _getTextByOriginalTextUseCase.invoke(event.text);
+    final savedText = await _getTextByOriginalTextUseCase.invoke(text);
     if (savedText != null) {
       if (savedText.isLearned) {
         emit(state.copyWith(
@@ -98,15 +110,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           status: HomeStatus.textAlreadySaved,
         ));
       }
-      return;
+      return Future.value(null);
     }
 
-    await _getInfoAndSaveTextUseCase.invoke(event.text).then((textInfo) {
+    try {
+      final textInfo = await _getInfoAndSaveTextUseCase.invoke(text);
       emit(state.copyWith(
         status: HomeStatus.translationSuccessful,
         textsToLearn: [textInfo, ...state.textsToLearn],
       ));
-    }).catchError((error, stackTrace) {
+      return Future.value(textInfo);
+    } catch (error, stackTrace) {
       emit(state.copyWith(
         status: HomeStatus.translationFailure,
       ));
@@ -115,7 +129,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         error: error,
         stackTrace: stackTrace,
       );
-    });
+      return Future.value(null);
+    }
   }
 
   Future<void> _onTextAddedToLearned(
@@ -244,5 +259,56 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         stackTrace: stackTrace,
       );
     });
+  }
+
+  Future<void> _onTranslateClicked(
+    TranslateClicked event,
+    Emitter<HomeState> emit,
+  ) async {
+    if (event.text.isEmpty ||
+        state.status == HomeStatus.translationInProgress) {
+      return Future.value(null);
+    }
+
+    emit(state.copyWith(
+      status: HomeStatus.translationInProgress,
+    ));
+
+    await _getTextInfoUseCase.invoke(event.text).then((textInfo) {
+      emit(state.copyWith(
+        status: HomeStatus.selectedTextTranslated,
+        translatedSelectedText: textInfo,
+      ));
+    }).catchError((error, stackTrace) {
+      emit(state.copyWith(
+        status: HomeStatus.selectedTextTranslated,
+      ));
+      log(
+        'getting text info and saving failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
+  }
+
+  Future<void> _onTranslateAndSaveClicked(
+    TranslateAndSaveClicked event,
+    Emitter<HomeState> emit,
+  ) async {
+    await _getAndSaveTextInfoIfValid(event.text, emit).then((textInfo) {
+      emit(state.copyWith(
+        status: HomeStatus.selectedTextTranslated,
+        translatedSelectedText: textInfo,
+      ));
+    });
+  }
+
+  Future<void> _onPopupWithTranslatedTextClosed(
+    PopupWithTranslatedTextClosed event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      translatedSelectedText: null,
+    ));
   }
 }

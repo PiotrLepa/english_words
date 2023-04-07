@@ -6,17 +6,25 @@ import 'package:flutter/material.dart';
 class WordDefinitionsList extends StatelessWidget {
   final bool showWord;
   final WordDefinitions definitions;
+  final void Function(String text) onTranslateClicked;
+  final void Function(String text) onTranslateAndSaveClicked;
 
   const WordDefinitionsList({
     Key? key,
     required this.showWord,
     required this.definitions,
+    required this.onTranslateClicked,
+    required this.onTranslateAndSaveClicked,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final items = definitions.results
-        .map((definition) => WordDefinitionItem(wordDefinition: definition))
+        .map((definition) => WordDefinitionItem(
+              wordDefinition: definition,
+              onTranslateClicked: onTranslateClicked,
+              onTranslateAndSaveClicked: onTranslateAndSaveClicked,
+            ))
         .expand((element) => [element, const SizedBox(height: 12)])
         .toList();
 
